@@ -86,15 +86,16 @@ const CourseHeroContainer = ({
         >
           <PageHeroMetaContainer subtitle="YOU'RE LEARNING" title={name} />
         </FlexContainer>
-
-        {headerActionButton}
-        <LinkButton
-          href={routes.shikshaExplore}
-          buttonProps={{
-            variant: 'GHOST',
-            text: 'Back to Course',
-          }}
-        />
+        <FlexContainer className='gap-2'>
+          {headerActionButton}
+          <LinkButton
+            href={routes.shikshaExplore}
+            buttonProps={{
+              variant: 'GHOST',
+              text: 'Back to Course',
+            }}
+          />
+        </FlexContainer>
       </FlexContainer>
     </FlexContainer>
   );
