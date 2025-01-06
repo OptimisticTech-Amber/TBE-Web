@@ -10,7 +10,7 @@ import { useUser } from '@/hooks';
 import useApi from '@/hooks/useApi';
 import { SheetHeroContainerProps } from '@/interfaces';
 import { ChevronLeftIcon } from '@heroicons/react/24/outline';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const SheetHeroContainer = ({
   id,
@@ -18,7 +18,6 @@ const SheetHeroContainer = ({
   isEnrolled,
 }: SheetHeroContainerProps) => {
   const { user, isAuth } = useUser();
-  const router = useRouter();
 
   const { makeRequest, loading } = useApi('interview-prep/enrollSheet');
 
@@ -70,9 +69,9 @@ const SheetHeroContainer = ({
       <FlexContainer className='border md:w-4/5 gap-4 w-full p-2 justify-between rounded'>
         <FlexContainer direction='row' itemCenter className='gap-2'>
           {/* Back Button */}
-          <button onClick={() => router.push('/interview-prep/my-sheets')}>
-            <ChevronLeftIcon className='h-5 w-5' />
-          </button>
+          <Link href={routes.user.sheets}>
+            <ChevronLeftIcon className='h-5 w-5 cursor-pointer' />
+          </Link>
 
           {/* Heading and Subheading */}
           <FlexContainer
