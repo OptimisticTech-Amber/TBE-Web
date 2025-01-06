@@ -9,6 +9,8 @@ import { routes } from '@/constant';
 import { useUser } from '@/hooks';
 import useApi from '@/hooks/useApi';
 import { SheetHeroContainerProps } from '@/interfaces';
+import { ChevronLeftIcon } from '@heroicons/react/24/outline';
+import { useRouter } from 'next/router';
 
 const SheetHeroContainer = ({
   id,
@@ -16,6 +18,7 @@ const SheetHeroContainer = ({
   isEnrolled,
 }: SheetHeroContainerProps) => {
   const { user, isAuth } = useUser();
+  const router = useRouter();
 
   const { makeRequest, loading } = useApi('interview-prep/enrollSheet');
 
@@ -65,18 +68,27 @@ const SheetHeroContainer = ({
   return (
     <FlexContainer>
       <FlexContainer className='border md:w-4/5 gap-4 w-full p-2 justify-between rounded'>
-        <FlexContainer
-          itemCenter={false}
-          direction='col'
-          className='items-start gap-1'
-        >
-          <Text level='h4' className='heading-4'>
-            Hello {user?.name ?? 'there'}!
-          </Text>
-          <Text level='p' className='paragraph text-greyDark'>
-            Ready to prepare for interviews?
-          </Text>
+        <FlexContainer direction='row' itemCenter className='gap-2'>
+          {/* Back Button */}
+          <button onClick={() => router.push('/interview-prep/my-sheets')}>
+            <ChevronLeftIcon className='h-5 w-5' />
+          </button>
+
+          {/* Heading and Subheading */}
+          <FlexContainer
+            itemCenter={false}
+            direction='col'
+            className='items-start gap-1'
+          >
+            <Text level='h4' className='heading-4'>
+              Hello {user?.name ?? 'there'}!
+            </Text>
+            <Text level='p' className='paragraph text-greyDark'>
+              Ready to prepare for interviews?
+            </Text>
+          </FlexContainer>
         </FlexContainer>
+
         <FlexContainer
           justifyCenter={false}
           itemCenter={false}
