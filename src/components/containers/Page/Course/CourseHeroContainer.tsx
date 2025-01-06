@@ -4,6 +4,7 @@ import {
   PageHeroMetaContainer,
   LoginWithGoogleButton,
   Button,
+  LinkButton,
 } from '@/components';
 import { routes } from '@/constant';
 import { useUser } from '@/hooks';
@@ -87,6 +88,13 @@ const CourseHeroContainer = ({
         </FlexContainer>
 
         {headerActionButton}
+        <LinkButton
+          href={routes.shikshaExplore}
+          buttonProps={{
+            variant: 'GHOST',
+            text: 'Back to Course',
+          }}
+        />
       </FlexContainer>
     </FlexContainer>
   );
