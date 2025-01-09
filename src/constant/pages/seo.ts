@@ -251,6 +251,15 @@ const getSEOMeta = (basePath: any): GetSEOMetaResponseType => {
         'Webinars, Live Workshops, The Boring Education, Online Learning, Programming, The Boring Education, College Students, Working Professionals, Career Development, Skill Enhancement, GitHub, Instagram, Twitter, LinkedIn',
       ...seoCommonMeta,
     },
+    [`${routes.youfocus}`]: {
+      title: 'YouFocus | The Boring Education',
+      siteName: 'Focus at The Boring Education',
+      description: 'Focus on your study keeping distractions aside.',
+      url: routes.youfocus,
+      keywords:
+        'Focus,concentration, The Boring Education, Online Learning, Programming, College Students, Working professional, Career Development, Skill Enhancement, GitHub, Instagram, Twitter, LinkedIn',
+      ...seoCommonMeta,
+    },
   };
 
   return meta[basePath];
