@@ -8,50 +8,42 @@ import {
 } from '@/components';
 import { getPreFetchProps } from '@/utils';
 import InputFieldContainer from '@/components/common/Form/InputFieldContainer';
+import { useApi } from '@/hooks';
+import { routes } from '@/constant';
 
 const Home = ({ seoMeta }: PageProps) => {
   const [playlistLink, setPlaylistLink] = useState<String | null>(null);
   const [error, setError] = useState<String | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const handleInputChange = (value: string) => {
     setPlaylistLink(value);
   };
+  const { makeRequest, loading } = useApi('interview-prep/enrollSheet');
+
   const handleAddPlaylist = async () => {
     if (!playlistLink) {
-      setError('Playlist is required');
+      setError('Playlist link is required');
       setTimeout(() => setError(null), 2000);
       return;
     }
-    setLoading(true);
     try {
-      // Making a dummy API request
-      const response = await fetch('/api/youfocus-backend/add-playlist', {
+      const response = await makeRequest({
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ playlistLink }),
+        url: routes.api.addYouFocusPlaylist,
+        body: { playlistLink },
       });
-
-      const data = await response.json();
-
-      if (data.success) {
-        // Handle success response
-        console.log('Playlist added successfully');
-      } else {
-        // Handle error response from the server
-        setError(data.message || 'Failed to add playlist');
+      console.log(response)
+      if (!response || response.status === false) {
+        setError(response.message || 'Failed to add playlist');
         setTimeout(() => setError(null), 2000);
       }
+      //If successful Handle at backend and redirect to playlist
     } catch (error) {
-      // Handle any error that occurs during the fetch
-      console.error('Error occurred:', error);
-      setError('An error occurred while adding the playlist');
+      console.error('Failed to add playlist:', error);
+      setError('Failed to add playlist. Please try again later.');
       setTimeout(() => setError(null), 2000);
-    } finally {
-      setLoading(false);
     }
   };
+
   return (
     <React.Fragment>
       <SEO seoMeta={seoMeta} />
