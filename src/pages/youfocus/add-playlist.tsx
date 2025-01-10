@@ -73,6 +73,7 @@ const Home = ({ seoMeta }: PageProps) => {
             label='Paste YouTube Playlist Link'
             type='text'
             onChange={handleInputChange}
+            labelClass='text-gray-500 font-semibold'
             className='md:w-1/2 px-5 text-black'
           />
           {error && <p className='text-red-600'>{error}</p>}
