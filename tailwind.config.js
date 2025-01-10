@@ -26,6 +26,7 @@ module.exports = {
         'strong-text': '1rem',
         'pre-title': '0.875rem',
         'button-text': '0.875rem',
+        'label':'0.875rem'
       },
       fontWeight: {
         thin: '100',

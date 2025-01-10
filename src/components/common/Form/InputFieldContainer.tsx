@@ -16,7 +16,7 @@ const InputFieldContainer = ({
       className={`w-full gap-2.5 ${className}`}
       itemCenter={false}
     >
-      <label className={`pre-title ${labelClass}`}>
+      <label className={`label ${labelClass}`}>
         {label}
         {!isOptional && <span>*</span>}
       </label>

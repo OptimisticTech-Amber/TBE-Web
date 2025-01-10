@@ -94,6 +94,9 @@
     @apply text-button-text font-bold text-contentLight;
   }
 
+  .label {
+    @apply text-label font-normal text-contentLight;
+  }
   /* Image */
   .image {
     object-fit: contain;
