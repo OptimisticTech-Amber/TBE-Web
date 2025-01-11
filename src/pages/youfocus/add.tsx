@@ -14,10 +14,12 @@ import { routes } from '@/constant';
 const Home = ({ seoMeta }: PageProps) => {
   const [playlistLink, setPlaylistLink] = useState<String | null>(null);
   const [error, setError] = useState<String | null>(null);
+
   const handleInputChange = (value: string) => {
     setPlaylistLink(value);
   };
-  const { makeRequest, loading } = useApi('interview-prep/enrollSheet');
+
+  const { makeRequest, loading } = useApi(`add/${playlistLink}`);
 
   const handleAddPlaylist = async () => {
     if (!playlistLink) {
@@ -25,14 +27,15 @@ const Home = ({ seoMeta }: PageProps) => {
       setTimeout(() => setError(null), 2000);
       return;
     }
+
     try {
       const response = await makeRequest({
         method: 'POST',
-        url: routes.api.addYouFocusPlaylist,
+        url: routes.api.youfocusPlaylist,
         body: { playlistLink },
       });
-      console.log(response)
-      if (!response || response.status === false) {
+      const { status } = response;
+      if (!status) {
         setError(response.message || 'Failed to add playlist');
         setTimeout(() => setError(null), 2000);
       }
@@ -57,10 +60,7 @@ const Home = ({ seoMeta }: PageProps) => {
           headingLevel={2}
           subtext='Learn Undistracted with Youtube Playlist'
         />
-        <FlexContainer
-          className='gap-3 w-full justify-center items-center'
-          direction='col'
-        >
+        <FlexContainer className='gap-3 w-full' direction='col'>
           <InputFieldContainer
             label='Paste YouTube Playlist Link'
             type='text'
@@ -73,7 +73,7 @@ const Home = ({ seoMeta }: PageProps) => {
             variant='PRIMARY'
             className=''
             text='Add Playlist'
-            active={playlistLink != null && playlistLink !== ''}
+            active={!!playlistLink || !error}
             isLoading={loading}
             onClick={handleAddPlaylist}
           />

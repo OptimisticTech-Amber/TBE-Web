@@ -97,6 +97,7 @@
   .label {
     @apply text-label font-normal text-contentLight;
   }
+
   /* Image */
   .image {
     object-fit: contain;
