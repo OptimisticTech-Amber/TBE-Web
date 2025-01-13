@@ -7,6 +7,7 @@ const InputFieldContainer = ({
   className,
   value,
   onChange,
+  labelClass,
   isOptional = false,
 }: InputFieldContainerProps) => {
   return (
@@ -15,7 +16,7 @@ const InputFieldContainer = ({
       className={`w-full gap-2.5 ${className}`}
       itemCenter={false}
     >
-      <label className='pre-title text-white'>
+      <label className={`label ${labelClass}`}>
         {label}
         {!isOptional && <span>*</span>}
       </label>
