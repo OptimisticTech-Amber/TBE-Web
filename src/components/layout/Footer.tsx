@@ -4,14 +4,14 @@ import { FaInstagram, FaLinkedin, FaYoutube } from 'react-icons/fa';
 
 const Footer = () => {
   return (
-    <footer className='bg-dark w-full'>
-      <FlexContainer
-        className='mx-4 justify-between py-1'
-        justifyCenter={false}
-      >
+    <footer className='bg-dark w-full flex justify-center'>
+
+      <FlexContainer className='w-[80%] justify-between py-1' justifyCenter={false}>
+
         <Text level='p' className='pre-title text-contentDark'>
-          Built with ❤️ in 🇮🇳
+          Built with ❤️ in<strong> IN</strong>
         </Text>
+        
         <FlexContainer className='gap-1'>
           <Link href={LINKS.instagram} target='_blank'>
             <FaInstagram color='white' size='2em' />
@@ -23,7 +23,9 @@ const Footer = () => {
             <FaLinkedin color='white' size='2em' />
           </Link>
         </FlexContainer>
+
       </FlexContainer>
+
     </footer>
   );
 };
