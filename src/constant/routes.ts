@@ -92,7 +92,7 @@ const routes = {
     webinarBySlug: (webinar: string) => `/webinar/${webinar}`,
     certificate: '/certificate',
     certificateById: (certificate: string) => `/certificate/${certificate}`,
-    youfocusPlaylist:'/youfocus/playlist'
+    youfocusPlaylist: '/youfocus/playlist',
   },
 };
 

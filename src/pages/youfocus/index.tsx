@@ -2,11 +2,7 @@ import React from 'react';
 import { PageProps } from '@/interfaces';
 import { CardContainerA, LandingPageHero, LinkButton, SEO } from '@/components';
 import { getPreFetchProps } from '@/utils';
-import {
-  routes,
-  STATIC_FILE_PATH,
-  YOUFOCUS_FEATURES,
-} from '@/constant';
+import { routes, STATIC_FILE_PATH, YOUFOCUS_FEATURES } from '@/constant';
 
 const Home = ({ seoMeta }: PageProps) => {
   return (

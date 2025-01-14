@@ -1,4 +1,4 @@
-import React, { ReactEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import { PageProps } from '@/interfaces';
 import {
   Button,
@@ -12,8 +12,8 @@ import { useApi } from '@/hooks';
 import { routes } from '@/constant';
 
 const Home = ({ seoMeta }: PageProps) => {
-  const [playlistLink, setPlaylistLink] = useState<String | null>(null);
-  const [error, setError] = useState<String | null>(null);
+  const [playlistLink, setPlaylistLink] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (value: string) => {
     setPlaylistLink(value);
