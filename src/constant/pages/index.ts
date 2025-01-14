@@ -297,7 +297,7 @@ const TBP_FEATURES: PrimaryCardProps[] = [
     id: v4(),
     title: `Book Tech Mentorship`,
     content: `Discuss Every issue you're facing in 1:1 Mentorship Sessions.`,
-    image: `${STATIC_FILE_PATH.svg}/webinar.svg`,
+    image: `${STATIC_FILE_PATH.svg}/workshop.svg`,
     imageAltText: `doubt session`,
   },
 ];
@@ -321,7 +321,7 @@ const TBIP_FEATURES: PrimaryCardProps[] = [
     id: v4(),
     title: `Ask Questions`,
     content: `Ask Interview Prep Questions in Community. We’re here to help.`,
-    image: `${STATIC_FILE_PATH.svg}/webinar.svg`,
+    image: `${STATIC_FILE_PATH.svg}/workshop.svg`,
     imageAltText: `doubt session`,
   },
 ];
@@ -436,7 +436,7 @@ const YOUFOCUS_FEATURES: PrimaryCardProps[] = [
     id: v4(),
     title: `Community Recommended Playlists`,
     content: `Leverage user reviews and ratings to surface the best playlists for any skill.`,
-    image: `${STATIC_FILE_PATH.svg}/webinar.svg`,
+    image: `${STATIC_FILE_PATH.svg}/workshop.svg`,
     imageAltText: `Recommendation`,
   },
 ];
