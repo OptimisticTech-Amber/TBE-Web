@@ -3,11 +3,12 @@ import { PageProps } from '@/interfaces';
 import {
   Button,
   FlexContainer,
+  Section,
   SectionHeaderContainer,
   SEO,
+  InputFieldContainer,
 } from '@/components';
 import { getPreFetchProps } from '@/utils';
-import InputFieldContainer from '@/components/common/Form/InputFieldContainer';
 import { useApi } from '@/hooks';
 import { routes } from '@/constant';
 
@@ -24,7 +25,7 @@ const Home = ({ seoMeta }: PageProps) => {
   const handleAddPlaylist = async () => {
     if (!playlistLink) {
       setError('Playlist link is required');
-      setTimeout(() => setError(null), 2000);
+      // setTimeout(() => setError(null), 2000);
       return;
     }
 
@@ -37,48 +38,45 @@ const Home = ({ seoMeta }: PageProps) => {
       const { status } = response;
       if (!status) {
         setError(response.message || 'Failed to add playlist');
-        setTimeout(() => setError(null), 2000);
+        // setTimeout(() => setError(null), 2000);
       }
       //If successful Handle at backend and redirect to playlist
     } catch (error) {
-      console.error('Failed to add playlist:', error);
       setError('Failed to add playlist. Please try again later.');
-      setTimeout(() => setError(null), 2000);
+      // setTimeout(() => setError(null), 2000);
     }
   };
 
   return (
     <React.Fragment>
       <SEO seoMeta={seoMeta} />
-      <FlexContainer
-        direction='col'
-        className='gap-6 pt-5 justify-center items-center'
-      >
-        <SectionHeaderContainer
-          heading='Add Your'
-          focusText='Playlist'
-          headingLevel={2}
-          subtext='Learn Undistracted with Youtube Playlist'
-        />
-        <FlexContainer className='gap-3 w-full' direction='col'>
-          <InputFieldContainer
-            label='Paste YouTube Playlist Link'
-            type='text'
-            onChange={handleInputChange}
-            labelClass='text-gray-500 font-semibold'
-            className='md:w-1/2 px-5 text-black'
+      <Section>
+        <FlexContainer direction='col' className='md:gap-6 gap-4'>
+          <SectionHeaderContainer
+            heading='Add Your'
+            focusText='Playlist'
+            headingLevel={2}
+            subtext='Learn Undistracted with Youtube Playlist'
           />
-          {error && <p className='text-red-600'>{error}</p>}
-          <Button
-            variant='PRIMARY'
-            className=''
-            text='Add Playlist'
-            active={!!playlistLink || !error}
-            isLoading={loading}
-            onClick={handleAddPlaylist}
-          />
+          <FlexContainer className='gap-3 w-full' direction='col'>
+            <InputFieldContainer
+              label='Paste YouTube Playlist Link'
+              type='text'
+              onChange={handleInputChange}
+              className='md:w-1/2 md:px-5 text-black'
+            />
+            {error && <p className='error'>{error}</p>}
+            <Button
+              variant='PRIMARY'
+              className=''
+              text='Add Playlist'
+              active={!!playlistLink || !error}
+              isLoading={loading}
+              onClick={handleAddPlaylist}
+            />
+          </FlexContainer>
         </FlexContainer>
-      </FlexContainer>
+      </Section>
     </React.Fragment>
   );
 };
