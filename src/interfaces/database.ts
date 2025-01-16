@@ -122,3 +122,25 @@ export interface UserCourseChapterModel {
   chapterId: string;
   isCompleted?: boolean;
 }
+
+export interface Video {
+  title: string;
+  videoId: string;
+  thumbnail: string;
+}
+
+export interface PlaylistModel {
+  playlistId: string;
+  playlistName: string;
+  description?: string;
+  referrerBy?: number;
+  tags?: string[];
+  videos: Video[];
+}
+
+export interface UserPlaylistModel {
+  userId: typeof Schema.Types.ObjectId;
+  playlistId: typeof Schema.Types.ObjectId;
+  playlist: PlaylistModel;
+  isPublic: boolean;
+}
