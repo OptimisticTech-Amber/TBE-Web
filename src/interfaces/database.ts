@@ -127,6 +127,28 @@ export interface UserCourseChapterModel {
   isCompleted?: boolean;
 }
 
+export interface Video {
+  title: string;
+  videoId: string;
+  thumbnail: string;
+}
+
+export interface PlaylistModel {
+  playlistId: string;
+  playlistName: string;
+  description?: string;
+  referrerBy?: number;
+  tags?: string[];
+  videos: Video[];
+}
+
+export interface UserPlaylistModel {
+  userId: typeof Schema.Types.ObjectId;
+  playlistId: typeof Schema.Types.ObjectId;
+  playlist: PlaylistModel;
+  isPublic: boolean;
+}
+
 export interface WebinarModel {
   _id: typeof Schema.Types.ObjectId;
   slug: string;
@@ -160,3 +182,4 @@ export interface CertificateModel extends Document {
   programName: string;
   programId: typeof Schema.Types.ObjectId;
 }
+
