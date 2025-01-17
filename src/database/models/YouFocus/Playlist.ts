@@ -11,10 +11,7 @@ const VideoSchema = new Schema<Video>(
   { _id: false } // Disable the creation of _id for embedded documents
 );
 
-<<<<<<< HEAD:src/database/models/YouFocus/Playlist.ts
 // Define the playlist schema
-=======
->>>>>>> ac68d622f11d57c23dbbd4e35a564b0639e8c52d:src/database/models/Youfocuse/Playlist.ts
 const PlaylistSchema = new Schema<PlaylistModel>(
   {
     playlistId: {
