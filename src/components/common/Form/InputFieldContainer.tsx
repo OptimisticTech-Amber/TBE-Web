@@ -7,6 +7,7 @@ const InputFieldContainer = ({
   className,
   value,
   onChange,
+  labelClass,
   isOptional = false,
 }: InputFieldContainerProps) => {
   return (
@@ -15,14 +16,14 @@ const InputFieldContainer = ({
       className={`w-full gap-2.5 ${className}`}
       itemCenter={false}
     >
-      <label className='pre-title text-white'>
+      <label className={`label ${labelClass}`}>
         {label}
         {!isOptional && <span>*</span>}
       </label>
       <input
         type={type}
         value={value}
-        className='w-full rounded focus:border-secondary focus:outline-none '
+        className='w-full rounded focus:outline-none focus:border-none focus:ring focus:ring-grey'
         onChange={(e) => onChange(e.target.value)}
       />
     </FlexContainer>

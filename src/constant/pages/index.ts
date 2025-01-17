@@ -297,7 +297,7 @@ const TBP_FEATURES: PrimaryCardProps[] = [
     id: v4(),
     title: `Book Tech Mentorship`,
     content: `Discuss Every issue you're facing in 1:1 Mentorship Sessions.`,
-    image: `${STATIC_FILE_PATH.svg}/webinar.svg`,
+    image: `${STATIC_FILE_PATH.svg}/workshop.svg`,
     imageAltText: `doubt session`,
   },
 ];
@@ -321,7 +321,7 @@ const TBIP_FEATURES: PrimaryCardProps[] = [
     id: v4(),
     title: `Ask Questions`,
     content: `Ask Interview Prep Questions in Community. We’re here to help.`,
-    image: `${STATIC_FILE_PATH.svg}/webinar.svg`,
+    image: `${STATIC_FILE_PATH.svg}/workshop.svg`,
     imageAltText: `doubt session`,
   },
 ];
@@ -417,6 +417,29 @@ const MY_PREV_EXPERIENCE = [
   },
 ];
 
+const YOUFOCUS_FEATURES: PrimaryCardProps[] = [
+  {
+    id: v4(),
+    title: `Distraction-Free Learning Environment`,
+    content: `Eliminate irrelevant videos and other distractions to stay fully focused on learning.`,
+    image: `${STATIC_FILE_PATH.svg}/mentorship.svg`,
+    imageAltText: `Less distraction`,
+  },
+  {
+    id: v4(),
+    title: `Integrated Timer`,
+    content: `Optimize the learning process fro efficiency and retention using a timer.`,
+    image: `${STATIC_FILE_PATH.svg}/peer-to-peer-learning.svg`,
+    imageAltText: `Timer based`,
+  },
+  {
+    id: v4(),
+    title: `Community Recommended Playlists`,
+    content: `Leverage user reviews and ratings to surface the best playlists for any skill.`,
+    image: `${STATIC_FILE_PATH.svg}/workshop.svg`,
+    imageAltText: `Recommendation`,
+  },
+];
 export {
   PRODUCTS,
   TESTIMONIALS,
@@ -428,4 +451,5 @@ export {
   SHIKSHA_COURSES,
   INTERVIEW_PREP_SHEETS,
   TBIP_FEATURES,
+  YOUFOCUS_FEATURES,
 };

@@ -94,6 +94,10 @@
     @apply text-button-text font-bold text-contentLight;
   }
 
+  .label {
+    @apply text-label font-semibold text-greyDark;
+  }
+
   /* Image */
   .image {
     object-fit: contain;
@@ -116,6 +120,10 @@
 
   .md-list {
     @apply list-disc;
+  }
+
+  .error {
+    @apply text-grey text-contentLight font-semibold;
   }
 
   .text-accent {

@@ -45,6 +45,10 @@ const routes = {
       webinar: 'webinar',
     },
   },
+  // YouFocus
+  youfocus: '/youfocus',
+  addPlaylist: '/youfocus/add',
+  explorePlaylist: '/youfocus/explore-playlist',
   404: '/404',
   api: {
     base: '/api/v1',
@@ -88,6 +92,7 @@ const routes = {
     webinarBySlug: (webinar: string) => `/webinar/${webinar}`,
     certificate: '/certificate',
     certificateById: (certificate: string) => `/certificate/${certificate}`,
+    youfocusPlaylist: '/youfocus/playlist',
   },
 };
 

@@ -182,4 +182,3 @@ export interface CertificateModel extends Document {
   programName: string;
   programId: typeof Schema.Types.ObjectId;
 }
-

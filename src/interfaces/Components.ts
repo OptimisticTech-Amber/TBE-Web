@@ -209,6 +209,7 @@ export interface InputFieldContainerProps {
   onChange: (value: string) => void;
   className?: string;
   value?: string;
+  labelClass?: string;
   isOptional?: boolean;
 }
 
