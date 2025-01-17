@@ -11,7 +11,6 @@ const VideoSchema = new Schema<Video>(
   { _id: false } // Disable the creation of _id for embedded documents
 );
 
-
 const PlaylistSchema = new Schema<PlaylistModel>(
   {
     playlistId: {
@@ -39,5 +38,6 @@ const PlaylistSchema = new Schema<PlaylistModel>(
 
 // Create or retrieve the model
 const Playlist: Model<PlaylistModel> =
-  models.Playlist || model<PlaylistModel>(databaseModels.PLAYLIST, PlaylistSchema);
+  models.Playlist ||
+  model<PlaylistModel>(databaseModels.PLAYLIST, PlaylistSchema);
 export default Playlist;
