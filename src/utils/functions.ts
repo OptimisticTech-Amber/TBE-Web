@@ -6,7 +6,10 @@ import {
   ProjectDocumentModel,
   ProjectPickedPageProps,
   User,
+  Video
 } from '@/interfaces';
+import { addPlaylistToDB, checkPlaylistExistsByPlaylistId } from '@/database';
+import { YOUTUBE_API_PATH } from '@/constant';
 
 const fetchAPIData = async (url: string) => {
   const response = await fetch(`${envConfig.BASE_API_URL}/${url}`);
@@ -284,6 +287,114 @@ const generateShareTemplate = (
   return baseMessage;
 };
 
+const addPlaylist = async (playlistUrl: string) => {
+  const playlistId = extractPlaylistId(playlistUrl);
+
+  if (!playlistId) {
+    throw new Error('Invalid playlist URL');
+  }
+
+  const existingPlaylist = await checkPlaylistExistsByPlaylistId(playlistId);
+
+  if (existingPlaylist.exists) {
+    return existingPlaylist.message;
+  }
+
+  const metadata = await fetchPlaylistMetadata(playlistId);
+
+  if (!metadata || metadata.success === false) {
+    throw new Error('Failed to fetch playlist metadata from YouTube');
+  }
+
+  const allVideos = await fetchPlaylistVideos(playlistId);
+
+  const { success, message } = await addPlaylistToDB({
+    playlistId,
+    playlistName: metadata.playlistName,
+    description: metadata.description,
+    videos: allVideos,
+  });
+
+  if (!success) {
+    throw new Error(message || 'Failed to add playlist');
+  }
+
+  return message;
+};
+
+// Fetch metadata for a YouTube playlist using its ID.
+export const fetchPlaylistMetadata = async (playlistId: string) => {
+  try {
+    const metadataResponse: any = await fetch(
+      `${YOUTUBE_API_PATH}/playlists?part=snippet&id=${playlistId}&key=${process.env.YOUTUBE_API_KEY}`
+    );
+    const metadata = await metadataResponse.json();
+
+    if (!metadataResponse.ok) {
+      throw new Error(`Failed to fetch playlist metadata: ${metadata.error.message}`);
+    }
+
+    if (!metadata.items || metadata.items.length === 0) {
+      throw new Error('No playlist metadata found.');
+    }
+
+    const playlistName = metadata.items[0].snippet.title;
+    const description = metadata.items[0].snippet.description;
+
+    return { playlistName, description };
+  } catch (error) {
+    return {
+      success: false,
+      message: 'Failed to fetch playlist metadata',
+    };
+  }
+};
+
+
+// Recursively fetch videos from a YouTube playlist.
+export const fetchPlaylistVideos = async (
+  playlistId: string,
+  pageToken: string = '',
+  accumulatedVideos: Video[] = []
+): Promise<Video[]> => {
+  try {
+    const response: any = await fetch(
+      `${YOUTUBE_API_PATH}/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${process.env.YOUTUBE_API_KEY}`
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data from YouTube: ${data.error.message}`);
+    }
+
+    const videos: Video[] = data.items.map((item: any) => {
+      const thumbnail = item.snippet.thumbnails?.default?.url || '';
+      return {
+        title: item.snippet.title,
+        videoId: item.snippet.resourceId.videoId,
+        thumbnail,
+      };
+    });
+
+    const allVideos = [...accumulatedVideos, ...videos];
+
+    if (data.nextPageToken) {
+      return fetchPlaylistVideos(playlistId, data.nextPageToken, allVideos);
+    }
+
+    return allVideos;
+  } catch (error) {
+    console.error(error);
+    return accumulatedVideos;
+  }
+};
+
+const extractPlaylistId = (url: string) => {
+  const regex = /(?:list=|\/playlist\/)([a-zA-Z0-9_-]{10,})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+};
+
 export {
   formatDate,
   formatTime,
@@ -303,4 +414,5 @@ export {
   generatePublicCertificateLink,
   fetchAPIData,
   generateShareTemplate,
+  addPlaylist,
 };
