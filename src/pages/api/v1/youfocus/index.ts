@@ -4,8 +4,7 @@ import { apiStatusCodes } from '@/constant';
 import { sendAPIResponse } from '@/utils';
 import {
   extractPlaylistId,
-  fetchPlaylistMetadata,
-  fetchPlaylistVideos
+  fetchPlaylistData
 }
   from '@/utils';
 import { checkPlaylistExistsByPlaylistId, addPlaylistToDB } from '@/database';
@@ -54,41 +53,50 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
     );
   }
 
-  const metadata = await fetchPlaylistMetadata(playlistId);
+   // Fetch playlist data from YouTube
+   try {
+    const playlistData = await fetchPlaylistData(playlistId);
 
-  if (!metadata || metadata.success === false) {
-    return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
-      success: false,
-      message: 'Failed to fetch playlist metadata from YouTube',
+    if (!playlistData) {
+      return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'Failed to fetch playlist data from YouTube',
+      });
+    }
+
+    // Add playlist to the database
+    const {playlistName, description, videos } = playlistData;
+    const { error, data } = await addPlaylistToDB({
+      playlistId,
+      playlistName,
+      description,
+      videos,
     });
-  }
 
-  const videos = await fetchPlaylistVideos(playlistId);
+    if (error) {
+      return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
+        sendAPIResponse({
+          status: false,
+          message: 'Failed to add playlist',
+          error,
+        })
+      );
+    }
 
-  const { data, error } = await addPlaylistToDB({
-    playlistId,
-    playlistName: metadata.playlistName,
-    description: metadata.description,
-    videos,
-  });
-
-  if (error) {
-    return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
+    return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
-        status: false,
-        message: 'Failed to add playlist',
-        error,
+        status: true,
+        message: 'Playlist added successfully!',
+        data,
       })
     );
+  } catch (error) {
+    return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'An unexpected error occurred',
+      error,
+    });
   }
-
-  return res.status(apiStatusCodes.RESOURCE_CREATED).json(
-    sendAPIResponse({
-      status: true,
-      message: 'Playlist added successfully!',
-      data,
-    })
-  );
 };
 
 

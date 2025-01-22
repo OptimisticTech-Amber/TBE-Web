@@ -6,6 +6,7 @@ import {
   ProjectDocumentModel,
   ProjectPickedPageProps,
   User,
+  PlaylistModel,
   Video
 } from '@/interfaces';
 import { YOUTUBE_API_PATH } from '@/constant';
@@ -286,71 +287,51 @@ const generateShareTemplate = (
   return baseMessage;
 };
 
-// Fetch metadata for a YouTube playlist using its ID.
-const fetchPlaylistMetadata = async (playlistId: string) => {
-  try {
-    const metadataResponse: any = await fetch(
-      `${YOUTUBE_API_PATH}/playlists?part=snippet&id=${playlistId}&key=${process.env.YOUTUBE_API_KEY}`
-    );
-    const metadata = await metadataResponse.json();
-
-    if (!metadataResponse.ok) {
-      throw new Error(`Failed to fetch playlist metadata: ${metadata.error.message}`);
-    }
-
-    if (!metadata.items || metadata.items.length === 0) {
-      throw new Error('No playlist metadata found.');
-    }
-
-    const playlistName = metadata.items[0].snippet.title;
-    const description = metadata.items[0].snippet.description;
-
-    return { playlistName, description };
-  } catch (error) {
-    return {
-      success: false,
-      message: 'Failed to fetch playlist metadata',
-    };
-  }
-};
-
-
-// Recursively fetch videos from a YouTube playlist.
- const fetchPlaylistVideos = async (
+// fetches playlist data (metadata and videos)
+const fetchPlaylistData = async (
   playlistId: string,
   pageToken: string = '',
-  accumulatedVideos: Video[] = []
-): Promise<Video[]> => {
-  try {
-    const response: any = await fetch(
-      `${YOUTUBE_API_PATH}/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${process.env.YOUTUBE_API_KEY}`
-    );
+  accumulatedVideos: Video[] = [],
+  metadata: { playlistName?: string; description?: string } = {}
+): Promise<PlaylistModel> => {
+  const response = await fetch(
+    `${YOUTUBE_API_PATH}/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${process.env.YOUTUBE_API_KEY}`
+  );
+  const data = await response.json();
 
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(`Failed to fetch data from YouTube: ${data.error.message}`);
-    }
-
-    const videos: Video[] = data.items.map((item: any) => {
-      const thumbnail = item.snippet.thumbnails?.default?.url || '';
-      return {
-        title: item.snippet.title,
-        videoId: item.snippet.resourceId.videoId,
-        thumbnail,
-      };
-    });
-
-    const allVideos = [...accumulatedVideos, ...videos];
-
-    if (data.nextPageToken) {
-      return fetchPlaylistVideos(playlistId, data.nextPageToken, allVideos);
-    }
-
-    return allVideos;
-  } catch (error) {
-    return accumulatedVideos;
+  if (!response.ok) {
+    throw new Error(`Failed to fetch playlist data: ${data.error.message}`);
   }
+
+  // Extract playlist metadata if not already set
+  if (!metadata.playlistName && data.items.length > 0) {
+    metadata.playlistName = data.items[0].snippet.channelTitle || 'Unknown Playlist Name';
+    metadata.description = data.items[0].snippet.description || 'No Description Available';
+  }
+
+  // Extract video details
+  const videos: Video[] = data.items.map((item: any) => ({
+    title: item.snippet.title,
+    videoId: item.snippet.resourceId.videoId,
+    thumbnail: item.snippet.thumbnails?.default?.url || 'https://via.placeholder.com/150',
+  }));
+
+  // Accumulate videos
+  const allVideos = [...accumulatedVideos, ...videos];
+
+  // Continue fetching if there's a nextPageToken
+  if (data.nextPageToken) {
+    return fetchPlaylistData(playlistId, data.nextPageToken, allVideos, metadata);
+  }
+
+  // Return the complete data when no more pages
+  return {
+    playlistName: metadata.playlistName || 'Unknown Playlist Name',
+    description: metadata.description || 'No Description Available',
+    videos: allVideos,
+  };
 };
+
 
 const extractPlaylistId = (url: string) => {
   const regex = /(?:list=|\/playlist\/)([a-zA-Z0-9_-]{10,})/;
@@ -377,7 +358,6 @@ export {
   generatePublicCertificateLink,
   fetchAPIData,
   generateShareTemplate,
-  fetchPlaylistMetadata,
-  fetchPlaylistVideos,
+  fetchPlaylistData,
   extractPlaylistId,
 };
