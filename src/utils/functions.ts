@@ -8,7 +8,6 @@ import {
   User,
   Video
 } from '@/interfaces';
-import { addPlaylistToDB, checkPlaylistExistsByPlaylistId } from '@/database';
 import { YOUTUBE_API_PATH } from '@/constant';
 
 const fetchAPIData = async (url: string) => {
@@ -287,43 +286,8 @@ const generateShareTemplate = (
   return baseMessage;
 };
 
-const addPlaylist = async (playlistUrl: string) => {
-  const playlistId = extractPlaylistId(playlistUrl);
-
-  if (!playlistId) {
-    throw new Error('Invalid playlist URL');
-  }
-
-  const existingPlaylist = await checkPlaylistExistsByPlaylistId(playlistId);
-
-  if (existingPlaylist.exists) {
-    return existingPlaylist.message;
-  }
-
-  const metadata = await fetchPlaylistMetadata(playlistId);
-
-  if (!metadata || metadata.success === false) {
-    throw new Error('Failed to fetch playlist metadata from YouTube');
-  }
-
-  const allVideos = await fetchPlaylistVideos(playlistId);
-
-  const { success, message } = await addPlaylistToDB({
-    playlistId,
-    playlistName: metadata.playlistName,
-    description: metadata.description,
-    videos: allVideos,
-  });
-
-  if (!success) {
-    throw new Error(message || 'Failed to add playlist');
-  }
-
-  return message;
-};
-
 // Fetch metadata for a YouTube playlist using its ID.
-export const fetchPlaylistMetadata = async (playlistId: string) => {
+const fetchPlaylistMetadata = async (playlistId: string) => {
   try {
     const metadataResponse: any = await fetch(
       `${YOUTUBE_API_PATH}/playlists?part=snippet&id=${playlistId}&key=${process.env.YOUTUBE_API_KEY}`
@@ -352,7 +316,7 @@ export const fetchPlaylistMetadata = async (playlistId: string) => {
 
 
 // Recursively fetch videos from a YouTube playlist.
-export const fetchPlaylistVideos = async (
+ const fetchPlaylistVideos = async (
   playlistId: string,
   pageToken: string = '',
   accumulatedVideos: Video[] = []
@@ -384,7 +348,6 @@ export const fetchPlaylistVideos = async (
 
     return allVideos;
   } catch (error) {
-    console.error(error);
     return accumulatedVideos;
   }
 };
@@ -414,5 +377,7 @@ export {
   generatePublicCertificateLink,
   fetchAPIData,
   generateShareTemplate,
-  addPlaylist,
+  fetchPlaylistMetadata,
+  fetchPlaylistVideos,
+  extractPlaylistId,
 };

@@ -1,35 +1,46 @@
 import { Playlist } from '@/database';
-import { PlaylistModel } from '@/interfaces';
+import { DatabaseQueryResponseType, PlaylistModel } from '@/interfaces';
 
-// Function to create a playlist in the database
-export const addPlaylistToDB = async ({
-    playlistId,
-    playlistName,
-    description,
-    videos,
-  }: PlaylistModel ) => {
-    try {
-      await Playlist.create({
-        playlistId,
-        playlistName,
-        description,
-        videos,
-      });
-  
-      return { success: true, message: 'Playlist added successfully' };
-    } catch (error) {
-      return { success: false, message: 'Failed to add playlist', error };
-    }
-  };
+
+const addPlaylistToDB = async ({
+  playlistId,
+  playlistName,
+  description,
+  videos,
+}: PlaylistModel): Promise<DatabaseQueryResponseType> => {
+  try {
+    await Playlist.create({
+      playlistId,
+      playlistName,
+      description,
+      videos,
+    });
+    return { data: { success: true, message: 'Playlist added successfully' } };
+  }
+  catch (error) {
+    return { error };
+  }
+}
+
 
 // Check if a playlist exists by its ID
-export const checkPlaylistExistsByPlaylistId = async (playlistId: string) => {
+const checkPlaylistExistsByPlaylistId = async (
+  playlistId: string
+): Promise<DatabaseQueryResponseType> => {
   try {
     const existingPlaylist = await Playlist.findOne({ playlistId });
-    return existingPlaylist
-      ? { exists: true, message: 'Playlist already exists' }
-      : { exists: false };
+
+    if (!existingPlaylist) {
+      return { error: 'Playlist does not exist' };
+    }
+
+    return { data: existingPlaylist };
   } catch (error) {
-    throw new Error('Error checking playlist existence');
+    return { error };
   }
 };
+
+export {
+  addPlaylistToDB,
+  checkPlaylistExistsByPlaylistId
+}
