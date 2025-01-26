@@ -7,7 +7,7 @@ import {
   fetchPlaylistData
 }
   from '@/utils';
-import { checkPlaylistExistsByPlaylistId, addPlaylistToDB } from '@/database';
+import { checkPlaylistExistsByPlaylistId, addPlaylistToDB, getPlaylistsFormDB } from '@/database';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
@@ -15,6 +15,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'POST':
       return handleAddPlaylist(req, res);
+    case 'GET':
+      return handleGetPlaylists(req, res);
     default:
       return res.status(apiStatusCodes.BAD_REQUEST).json({
         success: false,
@@ -86,6 +88,26 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 };
+
+const handleGetPlaylists = async (req:NextApiRequest, res:NextApiResponse) => {
+  const { data, error} = await getPlaylistsFormDB();
+
+  if (error) {
+    return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Error fetching playlists',
+      error,
+    });
+  }
+
+  return res.status(apiStatusCodes.OKAY).json(
+    sendAPIResponse({
+      status: true,
+      message: 'playlists fetched successfully',
+      data,
+    })
+  );
+}
 
 
 export default handler;

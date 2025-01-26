@@ -35,7 +35,19 @@ const checkPlaylistExistsByPlaylistId = async (
   }
 };
 
+// Get Allplaylist data FormDB
+const getPlaylistsFormDB = async (): Promise<DatabaseQueryResponseType> => {
+  try {
+    const playlists = await Playlist.find();
+    return { data: playlists };
+  } catch (error) {
+    return { error };
+  }
+};
+
+
 export {
   addPlaylistToDB,
-  checkPlaylistExistsByPlaylistId
+  checkPlaylistExistsByPlaylistId,
+  getPlaylistsFormDB,
 }
