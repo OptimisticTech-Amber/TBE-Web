@@ -134,14 +134,13 @@ export interface Video {
 }
 
 export interface PlaylistModel {
-  playlistId?: string;
+  playlistId: string;
   playlistName: string;
   description?: string;
   referrerBy?: number;
   tags?: string[];
   videos: Video[];
 }
-
 export interface UserPlaylistModel {
   userId: typeof Schema.Types.ObjectId;
   playlistId: typeof Schema.Types.ObjectId;

@@ -1,4 +1,4 @@
-import { envConfig, LINKS } from '@/constant';
+import { envConfig, LINKS,  YOUTUBE_API_PATH } from '@/constant';
 import {
   BaseInterviewSheetResponseProps,
   BaseShikshaCourseResponseProps,
@@ -6,10 +6,9 @@ import {
   ProjectDocumentModel,
   ProjectPickedPageProps,
   User,
-  PlaylistModel,
-  Video
+  Video,
+  PlaylistModel
 } from '@/interfaces';
-import { YOUTUBE_API_PATH } from '@/constant';
 
 const fetchAPIData = async (url: string) => {
   const response = await fetch(`${envConfig.BASE_API_URL}/${url}`);
@@ -243,7 +242,7 @@ const mapInterviewSheetResponseToCard = (
         image: coverImageURL,
         title: name,
         imageAltText: name,
-        content: description,
+        content: description,   
         href: `/interview-prep/${slug}/?sheetId=${_id}`,
         isEnrolled,
         active: isActive,
@@ -305,7 +304,7 @@ const fetchPlaylistData = async (
 
   // Extract playlist metadata if not already set
   if (!metadata.playlistName && data.items.length > 0) {
-    metadata.playlistName = data.items[0].snippet.channelTitle || 'Unknown Playlist Name';
+    metadata.playlistName = data.items[0].snippet.title || '';
     metadata.description = data.items[0].snippet.description || 'No Description Available';
   }
 
@@ -326,8 +325,9 @@ const fetchPlaylistData = async (
 
   // Return the complete data when no more pages
   return {
-    playlistName: metadata.playlistName || 'Unknown Playlist Name',
-    description: metadata.description || 'No Description Available',
+    playlistId,
+    playlistName: metadata.playlistName || ' ',
+    description: metadata.description || '',
     videos: allVideos,
   };
 };

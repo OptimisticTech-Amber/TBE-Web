@@ -24,14 +24,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { playlistUrl }: { playlistUrl: string } = req.body;
-
-  if (!playlistUrl) {
-    return res.status(apiStatusCodes.BAD_REQUEST).json({
-      success: false,
-      message: 'Playlist URL is required',
-    });
-  }
+  const { playlistUrl } = req.body;
 
   const playlistId = extractPlaylistId(playlistUrl);
 
@@ -42,13 +35,14 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  const { error: playlistAlreadyExists } = await checkPlaylistExistsByPlaylistId(playlistId);
+  const { error: playlistAlreadyExists, data } = await checkPlaylistExistsByPlaylistId(playlistId);
 
   if (!playlistAlreadyExists) {
-    return res.status(apiStatusCodes.BAD_REQUEST).json(
+    return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
-        status: false,
+        status: true,
         message: 'Playlist already exists',
+        data
       })
     );
   }
@@ -65,13 +59,7 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     // Add playlist to the database
-    const {playlistName, description, videos } = playlistData;
-    const { error, data } = await addPlaylistToDB({
-      playlistId,
-      playlistName,
-      description,
-      videos,
-    });
+    const { error, data } = await addPlaylistToDB(playlistData);
 
     if (error) {
       return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(

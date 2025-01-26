@@ -1,26 +1,18 @@
 import { Playlist } from '@/database';
 import { DatabaseQueryResponseType, PlaylistModel } from '@/interfaces';
 
-
-const addPlaylistToDB = async ({
-  playlistId,
-  playlistName,
-  description,
-  videos,
-}: PlaylistModel): Promise<DatabaseQueryResponseType> => {
+// Add a playlist to the database
+const addPlaylistToDB = async (
+  playlistDetails: PlaylistModel
+): Promise<DatabaseQueryResponseType> => {
   try {
-    await Playlist.create({
-      playlistId,
-      playlistName,
-      description,
-      videos,
-    });
-    return { data: { success: true, message: 'Playlist added successfully' } };
+    const playlist = new Playlist(playlistDetails);
+    await playlist.save();
+    return { data: playlist };
+  } catch (error) {
+    return { error: 'Failed while adding playlist' };
   }
-  catch (error) {
-    return { error };
-  }
-}
+};
 
 
 // Check if a playlist exists by its ID
@@ -33,6 +25,9 @@ const checkPlaylistExistsByPlaylistId = async (
     if (!existingPlaylist) {
       return { error: 'Playlist does not exist' };
     }
+    // Increment referrerBy only if playlist is found
+    existingPlaylist.referrerBy = (existingPlaylist.referrerBy || 0) + 1;
+    await existingPlaylist.save();
 
     return { data: existingPlaylist };
   } catch (error) {
