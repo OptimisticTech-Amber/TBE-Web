@@ -141,7 +141,6 @@ export interface PlaylistModel {
   tags?: string[];
   videos: Video[];
 }
-
 export interface UserPlaylistModel {
   userId: typeof Schema.Types.ObjectId;
   playlistId: typeof Schema.Types.ObjectId;

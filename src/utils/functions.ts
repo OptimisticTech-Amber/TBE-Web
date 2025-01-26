@@ -1,4 +1,4 @@
-import { envConfig, LINKS } from '@/constant';
+import { envConfig, LINKS,  YOUTUBE_API_PATH } from '@/constant';
 import {
   BaseInterviewSheetResponseProps,
   BaseShikshaCourseResponseProps,
@@ -6,6 +6,8 @@ import {
   ProjectDocumentModel,
   ProjectPickedPageProps,
   User,
+  Video,
+  PlaylistModel
 } from '@/interfaces';
 
 const fetchAPIData = async (url: string) => {
@@ -240,7 +242,7 @@ const mapInterviewSheetResponseToCard = (
         image: coverImageURL,
         title: name,
         imageAltText: name,
-        content: description,
+        content: description,   
         href: `/interview-prep/${slug}/?sheetId=${_id}`,
         isEnrolled,
         active: isActive,
@@ -284,6 +286,59 @@ const generateShareTemplate = (
   return baseMessage;
 };
 
+// fetches playlist data (metadata and videos)
+const fetchPlaylistData = async (
+  playlistId: string,
+  pageToken: string = '',
+  accumulatedVideos: Video[] = [],
+  metadata: { playlistName?: string; description?: string } = {}
+): Promise<PlaylistModel> => {
+  const response = await fetch(
+    `${YOUTUBE_API_PATH}/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${process.env.YOUTUBE_API_KEY}`
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch playlist data: ${data.error.message}`);
+  }
+
+  // Extract playlist metadata if not already set
+  if (!metadata.playlistName && data.items.length > 0) {
+    metadata.playlistName = data.items[0].snippet.title || '';
+    metadata.description = data.items[0].snippet.description || 'No Description Available';
+  }
+
+  // Extract video details
+  const videos: Video[] = data.items.map((item: any) => ({
+    title: item.snippet.title,
+    videoId: item.snippet.resourceId.videoId,
+    thumbnail: item.snippet.thumbnails?.default?.url || 'https://via.placeholder.com/150',
+  }));
+
+  // Accumulate videos
+  const allVideos = [...accumulatedVideos, ...videos];
+
+  // Continue fetching if there's a nextPageToken
+  if (data.nextPageToken) {
+    return fetchPlaylistData(playlistId, data.nextPageToken, allVideos, metadata);
+  }
+
+  // Return the complete data when no more pages
+  return {
+    playlistId,
+    playlistName: metadata.playlistName || ' ',
+    description: metadata.description || '',
+    videos: allVideos,
+  };
+};
+
+
+const extractPlaylistId = (url: string) => {
+  const regex = /(?:list=|\/playlist\/)([a-zA-Z0-9_-]{10,})/;
+  const match = url.match(regex);
+  return match ? match[1] : null;
+};
+
 export {
   formatDate,
   formatTime,
@@ -303,4 +358,6 @@ export {
   generatePublicCertificateLink,
   fetchAPIData,
   generateShareTemplate,
+  fetchPlaylistData,
+  extractPlaylistId,
 };
