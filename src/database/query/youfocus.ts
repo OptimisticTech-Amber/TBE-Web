@@ -45,9 +45,27 @@ const getPlaylistsFormDB = async (): Promise<DatabaseQueryResponseType> => {
   }
 };
 
+// Get a playlist by its ID
+const getPlaylistByIDFromDB = async (
+  playlistId: string
+): Promise<DatabaseQueryResponseType> => {
+  try {
+    const playlist = await Playlist.findById({ _id: playlistId });
+
+    if (!playlist) {
+      return { error: 'Playlist not found' };
+    }
+
+    return { data: playlist };
+  } catch (error) {
+    return { error };
+  }
+}
+
 
 export {
   addPlaylistToDB,
   checkPlaylistExistsByPlaylistId,
   getPlaylistsFormDB,
+  getPlaylistByIDFromDB,
 }
