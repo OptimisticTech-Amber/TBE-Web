@@ -1,47 +1,21 @@
-Now it's time to show off your Work on the Social Media -
+# Introduction to Backend Engineering
 
-Copy the message below and share it on LinkedIn & Twitter. Don’t forget to tag us.
+Backend engineering is the process of building and maintaining the server side of a web application, ensuring it functions seamlessly behind the scenes. It’s a highly sought-after skill in tech, offering opportunities to work with top companies, and startups, or even scale your projects. Here’s what you’ll learn in this course:
 
-```
-"🎉 Excited to share that I’ve successfully completed the Shiksha Frontend Development Course by The Boring Education(TAG US) 🚀
+1. **Git & GitHub**: Version control and collaboration.
+2. **Node.js**: Building server-side applications with JavaScript.
+3. **Express.js**: Creating robust APIs and handling server logic.
+4. **Database Management**: Working with **SQL** (MySQL, PostgreSQL) and **NoSQL** (MongoDB).
+5. **Authentication**: Secure login systems with JWT and OAuth.
+6. **REST APIs**: Designing and building scalable APIs.
+7. **Documentations**: Learning to Document Your APIs and Expose them in Real World
+8. **Testing**: Testing Your APIs with Automated Test Cases
+9. **Deployment**: Hosting and managing your backend on AWS, Vercel, and Heroku platforms.
 
-This journey has been packed with learning HTML, CSS, JavaScript, React.js, Next.js and more. Grateful for the guidance and resources provided. 💻
-Can’t wait to apply these skills to real-world projects! 🌟
+### What’s the Scope?
 
-Few things I learnt in this course - ADD YOUR LEARNINGS
-1.
+Backend engineers in India can earn anywhere between **₹12 LPA to ₹80 LPA**, depending on expertise and the company. Globally, the average salary for backend developers ranges from **$80,000 to $130,000 per year**.
 
-ADD A THANK YOU NOTE FOR SACHIN(Not IMP But I'd be happy if you do :')
+### Time Commitment
 
-#ShikshaByTheBoringEducation #ZeroToOneFrontendDeveCourse #Frontend #Reactjs
-```
-
-### Our Handles -
-
-1. [LinkedIn](https://www.linkedin.com/company/theboringeducation)
-2. [Sachin’s LinkedIn](https://www.linkedin.com/in/imsks/)
-3. [Sachin’s Twitter](https://x.com/i_skrs)
-
-## More from us
-
-1. Unable to Understand How to Get Started With? Book a [Mentorship Session with me](https://topmate.io/imsks/)
-
-2. Want to Attend Live Workshops? [Visit The Boring Workshops](https://theboringeducation.com/webinar)
-
-3. Be Part of [The Boring Community](https://chat.whatsapp.com/EeB7LrPRg2p3RyMOicyIAC)
-
-<aside>
-✅
-
-We’re Building An Open Source Tech Education Platform for 🇮🇳 and We’ll launch Projects like Shiksha & The Boring Projects. Keep an eye on website
-
-</aside>
-
-<aside>
-🔥
-
-Thank you so much for being part of this course.
-
-❤️ from Sachin.
-
-</aside>
+To master backend development, you’ll need to dedicate **2-3 months**, spending **4-6 hours daily**. This course is hands-on, with a focus on building **10+ projects**, including real-world use cases and assignments to strengthen your learning.
