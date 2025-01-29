@@ -22,7 +22,7 @@ const UserPlaylistSchema = new Schema<UserPlaylistModel>(
   { timestamps: true }
 );
 
- const UserPlaylist: Model<UserPlaylistModel> = 
+const UserPlaylist: Model<UserPlaylistModel> =
   models.UserPlaylist ||
   model<UserPlaylistModel>(databaseModels.USER_PLAYLIST, UserPlaylistSchema);
 export default UserPlaylist;
