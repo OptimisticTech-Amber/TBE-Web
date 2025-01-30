@@ -23,6 +23,13 @@ const UserPlaylistSchema = new Schema<UserPlaylistModel>(
   { timestamps: true }
 );
 
+UserPlaylistSchema.virtual('Playlist', {
+  ref: databaseModels.PLAYLIST,
+  localField: 'playlistId',
+  foreignField: '_id',
+  justOne: true,
+});
+
 const UserPlaylist: Model<UserPlaylistModel> =
   models.UserPlaylist ||
   model<UserPlaylistModel>(databaseModels.USER_PLAYLIST, UserPlaylistSchema);

@@ -1,4 +1,4 @@
-import { Playlist } from '@/database';
+import { Playlist, UserPlaylist, User } from '@/database';
 import { DatabaseQueryResponseType, PlaylistModel } from '@/interfaces';
 
 // Add a playlist to the database
@@ -14,6 +14,27 @@ const addPlaylistToDB = async (
   }
 };
 
+// Link a user to a playlist in `UserPlaylist`
+const addUserPlaylistEntry = async (
+  userId: string,
+  playlistId: string
+): Promise<DatabaseQueryResponseType> => {
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return { error: 'User not found' };
+    }
+    const userPlaylist = new UserPlaylist({
+      userId,
+      playlistId,
+    });
+
+    await userPlaylist.save();
+    return { data: userPlaylist };
+  } catch (error) {
+    return { error: 'Failed to link playlist to user' };
+  }
+};
 
 // Check if a playlist exists by its ID
 const checkPlaylistExistsByPlaylistId = async (
@@ -66,6 +87,7 @@ const getPlaylistByIDFromDB = async (
 export {
   addPlaylistToDB,
   checkPlaylistExistsByPlaylistId,
+  addUserPlaylistEntry,
   getPlaylistsFormDB,
   getPlaylistByIDFromDB,
 }

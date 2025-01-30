@@ -9,6 +9,7 @@ import UserSheet from './models/InterviewPrep/UserSheet';
 import Webinar from './models/Webinar';
 import Certificate from './models/Certificate';
 import Playlist from './models/YouFocus/Playlist';
+import UserPlaylist from './models/YouFocus/UserPlaylist';
 
 export {
   Project,
@@ -21,6 +22,7 @@ export {
   Webinar,
   Certificate,
   Playlist,
+  UserPlaylist
 };
 
 // Query
