@@ -7,14 +7,16 @@ import {
   fetchPlaylistData
 }
   from '@/utils';
-import { checkPlaylistExistsByPlaylistId, addPlaylistToDB, getPlaylistsFormDB } from '@/database';
+import { checkPlaylistExistsByPlaylistId, addPlaylistToDB, getPlaylistsFormDB, addUserPlaylistEntry } from '@/database';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
+  const { method, query } = req;
+  const { userId } = query as { userId: string };
 
   switch (req.method) {
     case 'POST':
-      return handleAddPlaylist(req, res);
+      return handleAddPlaylist(req, res, userId);
     case 'GET':
       return handleGetPlaylists(req, res);
     default:
@@ -25,7 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
+const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, userId: string) => {
   const { playlistUrl } = req.body;
 
   const playlistId = extractPlaylistId(playlistUrl);
@@ -37,14 +39,14 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
     });
   }
 
-  const { error: playlistAlreadyExists, data } = await checkPlaylistExistsByPlaylistId(playlistId);
+  const { data: existingPlaylist } = await checkPlaylistExistsByPlaylistId(playlistId);
 
-  if (!playlistAlreadyExists) {
+  if (existingPlaylist) {
     return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
         status: true,
         message: 'Playlist already exists',
-        data
+        data: existingPlaylist,
       })
     );
   }
@@ -61,7 +63,7 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     // Add playlist to the database
-    const { error, data } = await addPlaylistToDB(playlistData);
+    const { error, data: newPlaylist } = await addPlaylistToDB(playlistData);
 
     if (error) {
       return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
@@ -72,12 +74,23 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse) => {
         })
       );
     }
+    
+    const { error: userPlaylistError } = await addUserPlaylistEntry(userId, newPlaylist._id);
+
+    if (userPlaylistError) {
+      return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
+        status: false,
+        message: 'Failed to link user and playlist',
+        error: userPlaylistError,
+      });
+    }
+   
 
     return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
         status: true,
         message: 'Playlist added successfully!',
-        data,
+        data: newPlaylist,
       })
     );
   } catch (error) {
