@@ -42,6 +42,9 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, user
   const { data: existingPlaylist } = await checkPlaylistExistsByPlaylistId(playlistId);
 
   if (existingPlaylist) {
+    
+   await addUserPlaylistEntry(userId, existingPlaylist._id);
+
     return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
         status: true,

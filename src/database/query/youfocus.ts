@@ -19,7 +19,13 @@ const addUserPlaylistEntry = async (
   userId: string,
   playlistId: string
 ): Promise<DatabaseQueryResponseType> => {
-  try {
+  try { 
+    // Check if Userplaylist exists
+    const existingUserPlaylist = await UserPlaylist.findOne({ userId, playlistId });
+    if (existingUserPlaylist) {
+      return { error: 'UserPlaylist already exists' };
+    }
+    // Check if user exists
     const user = await User.findById(userId);
     if (!user) {
       return { error: 'User not found' };
