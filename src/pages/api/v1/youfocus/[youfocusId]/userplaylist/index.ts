@@ -29,11 +29,13 @@ const handleGetUserPlaylists = async (
     try {
         const userPlaylists = await getUserPlaylistsFromDB(userId);
 
-        if (!userPlaylists) {
-            return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
-                status: false,
-                message: "Failed while fetching user playlists",
-            })
+        if (userPlaylists.error) {
+            return res.status(apiStatusCodes.NOT_FOUND).json(
+                sendAPIResponse({
+                    status: false,
+                    message: "User does not have any playlists"
+                })
+            );
         }
 
         return res.status(apiStatusCodes.OKAY).json(
