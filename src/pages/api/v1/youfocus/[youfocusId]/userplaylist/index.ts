@@ -10,13 +10,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { method, query } = req;
     const { userId } = query as { userId: string };
 
-    if (!userId) {
-        return res.status(apiStatusCodes.BAD_REQUEST).json({
-            success: false,
-            message: "userId is required in the URL"
-        });
-    }
-
     switch (method) {
         case "GET":
             return handleGetUserPlaylists(req, res, userId);
