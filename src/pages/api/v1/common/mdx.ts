@@ -7,6 +7,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
     case 'GET':
       return generateMDXContent(req, res);
+    case 'POST':
+      return generateBulkMDXContent(req, res);
 
     default:
       return res.status(apiStatusCodes.BAD_REQUEST).json(
@@ -23,6 +25,32 @@ const generateMDXContent = async (
   res: NextApiResponse
 ) => {
   return res.status(apiStatusCodes.OKAY).json(getMDXContent());
+};
+
+const generateBulkMDXContent = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const { bulkMDPayload } = req.body;
+
+  if (!bulkMDPayload) {
+    return res.status(apiStatusCodes.BAD_REQUEST).json(
+      sendAPIResponse({
+        status: false,
+        message: 'bulkMDPayload is required',
+      })
+    );
+  }
+
+  const mappedData = bulkMDPayload.map((item: any) => {
+    const { name, path } = item;
+    return {
+      name,
+      content: getMDXContent(path),
+    };
+  });
+
+  return res.status(apiStatusCodes.OKAY).json(mappedData);
 };
 
 export default handler;

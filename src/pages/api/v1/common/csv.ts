@@ -1,7 +1,6 @@
 import { apiStatusCodes } from '@/constant';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { sendAPIResponse } from '@/utils';
-import { getCSVContent } from '@/utils/csv';
+import { sendAPIResponse, getCSVContent } from '@/utils';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (req.method) {
