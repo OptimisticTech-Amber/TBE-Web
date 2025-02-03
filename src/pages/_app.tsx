@@ -16,7 +16,7 @@ const TheBoringEducation = ({
 }: AppProps) => {
   return (
     <>
-      <Script async src={gtag}></Script>
+      <Script async strategy='afterInteractive' src={gtag}></Script>
       <Script id='google-analytics'>{googleAnalyticsScript}</Script>
       <SessionProvider session={session}>
         <QueryClientProvider client={queryClient}>

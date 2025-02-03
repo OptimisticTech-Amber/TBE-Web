@@ -6,6 +6,7 @@ const GOOGLE_AUTH_CLIENT_SECRET = process.env
   .GOOGLE_AUTH_CLIENT_SECRET as string;
 const ADMIN_SECRET = process.env.ADMIN_SECRET as string;
 const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET as string;
+const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS as string;
 
 const envConfig = {
   MONGODB_URI,
@@ -15,6 +16,7 @@ const envConfig = {
   ADMIN_SECRET,
   NEXTAUTH_SECRET,
   BASE_AUTH_API_URL,
+  GA_TRACKING_ID,
 };
 
 export { envConfig };
