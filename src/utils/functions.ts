@@ -1,4 +1,4 @@
-import { envConfig, LINKS,  YOUTUBE_API_PATH } from '@/constant';
+import { envConfig, LINKS, YOUTUBE_API_PATH } from '@/constant';
 import {
   BaseInterviewSheetResponseProps,
   BaseShikshaCourseResponseProps,
@@ -7,7 +7,7 @@ import {
   ProjectPickedPageProps,
   User,
   Video,
-  PlaylistModel
+  PlaylistModel,
 } from '@/interfaces';
 
 const fetchAPIData = async (url: string) => {
@@ -242,7 +242,7 @@ const mapInterviewSheetResponseToCard = (
         image: coverImageURL,
         title: name,
         imageAltText: name,
-        content: description,   
+        content: description,
         href: `/interview-prep/${slug}/?sheetId=${_id}`,
         isEnrolled,
         active: isActive,
@@ -289,7 +289,7 @@ const generateShareTemplate = (
 // fetches playlist data (metadata and videos)
 const fetchPlaylistData = async (
   playlistId: string,
-  pageToken: string = '',
+  pageToken = '',
   accumulatedVideos: Video[] = [],
   metadata: { playlistName?: string; description?: string } = {}
 ): Promise<PlaylistModel> => {
@@ -305,14 +305,17 @@ const fetchPlaylistData = async (
   // Extract playlist metadata if not already set
   if (!metadata.playlistName && data.items.length > 0) {
     metadata.playlistName = data.items[0].snippet.title || '';
-    metadata.description = data.items[0].snippet.description || 'No Description Available';
+    metadata.description =
+      data.items[0].snippet.description || 'No Description Available';
   }
 
   // Extract video details
   const videos: Video[] = data.items.map((item: any) => ({
     title: item.snippet.title,
     videoId: item.snippet.resourceId.videoId,
-    thumbnail: item.snippet.thumbnails?.default?.url || 'https://via.placeholder.com/150',
+    thumbnail:
+      item.snippet.thumbnails?.default?.url ||
+      'https://via.placeholder.com/150',
   }));
 
   // Accumulate videos
@@ -320,7 +323,12 @@ const fetchPlaylistData = async (
 
   // Continue fetching if there's a nextPageToken
   if (data.nextPageToken) {
-    return fetchPlaylistData(playlistId, data.nextPageToken, allVideos, metadata);
+    return fetchPlaylistData(
+      playlistId,
+      data.nextPageToken,
+      allVideos,
+      metadata
+    );
   }
 
   // Return the complete data when no more pages
@@ -331,7 +339,6 @@ const fetchPlaylistData = async (
     videos: allVideos,
   };
 };
-
 
 const extractPlaylistId = (url: string) => {
   const regex = /(?:list=|\/playlist\/)([a-zA-Z0-9_-]{10,})/;

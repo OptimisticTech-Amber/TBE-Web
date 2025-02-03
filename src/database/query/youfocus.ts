@@ -21,7 +21,10 @@ const addUserPlaylistEntry = async (
 ): Promise<DatabaseQueryResponseType> => {
   try {
     // Check if Userplaylist exists
-    const existingUserPlaylist = await UserPlaylist.findOne({ userId, playlistId });
+    const existingUserPlaylist = await UserPlaylist.findOne({
+      userId,
+      playlistId,
+    });
     if (existingUserPlaylist) {
       return { error: 'UserPlaylist already exists' };
     }
@@ -87,30 +90,26 @@ const getPlaylistByIDFromDB = async (
   } catch (error) {
     return { error };
   }
-}
+};
 
 // Get all playlists of a user  from `UserPlaylist`
 const getUserPlaylistsFromDB = async (
   userId: string
 ): Promise<DatabaseQueryResponseType> => {
   try {
-
-    const userPlaylists = await UserPlaylist.find({ userId }).populate("playlistId");
+    const userPlaylists = await UserPlaylist.find({ userId }).populate(
+      'playlistId'
+    );
 
     if (userPlaylists.length === 0) {
-
-      return { error: "User does not have any playlists" };
+      return { error: 'User does not have any playlists' };
     }
 
     return { data: userPlaylists };
   } catch (error) {
-  
-    return { error: "An error occurred while fetching playlists" };
-
+    return { error: 'An error occurred while fetching playlists' };
   }
 };
-
-
 
 export {
   addPlaylistToDB,
@@ -118,5 +117,5 @@ export {
   addUserPlaylistEntry,
   getPlaylistsFormDB,
   getPlaylistByIDFromDB,
-  getUserPlaylistsFromDB
-}
+  getUserPlaylistsFromDB,
+};

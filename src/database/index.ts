@@ -22,7 +22,7 @@ export {
   Webinar,
   Certificate,
   Playlist,
-  UserPlaylist
+  UserPlaylist,
 };
 
 // Query
@@ -32,4 +32,4 @@ export * from './query/user';
 export * from './query/interview-prep';
 export * from './query/webinar';
 export * from './query/certificate';
- export * from './query/youfocus';
+export * from './query/youfocus';

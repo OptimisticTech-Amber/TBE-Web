@@ -32,9 +32,9 @@ const DIFFICULTY_LEVEL: DifficultyType[] = [
   'Advanced',
 ];
 
-const CERTIFICATE_TYPE: CertificateType[] = ['WEBINAR', 'SHIKSHA']; 
+const CERTIFICATE_TYPE: CertificateType[] = ['WEBINAR', 'SHIKSHA'];
 
-const YOUTUBE_API_PATH: string = 'https://www.googleapis.com/youtube/v3';
+const YOUTUBE_API_PATH = 'https://www.googleapis.com/youtube/v3';
 
 export {
   PROJECT_SKILLS,

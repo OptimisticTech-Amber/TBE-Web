@@ -2,12 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { connectDB } from '@/middlewares';
 import { apiStatusCodes } from '@/constant';
 import { sendAPIResponse } from '@/utils';
+import { extractPlaylistId, fetchPlaylistData } from '@/utils';
 import {
-  extractPlaylistId,
-  fetchPlaylistData
-}
-  from '@/utils';
-import { checkPlaylistExistsByPlaylistId, addPlaylistToDB, getPlaylistsFormDB, addUserPlaylistEntry } from '@/database';
+  checkPlaylistExistsByPlaylistId,
+  addPlaylistToDB,
+  getPlaylistsFormDB,
+  addUserPlaylistEntry,
+} from '@/database';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
@@ -27,7 +28,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, userId: string) => {
+const handleAddPlaylist = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  userId: string
+) => {
   const { playlistUrl } = req.body;
 
   const playlistId = extractPlaylistId(playlistUrl);
@@ -39,11 +44,12 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, user
     });
   }
 
-  const { data: existingPlaylist } = await checkPlaylistExistsByPlaylistId(playlistId);
+  const { data: existingPlaylist } = await checkPlaylistExistsByPlaylistId(
+    playlistId
+  );
 
   if (existingPlaylist) {
-    
-   await addUserPlaylistEntry(userId, existingPlaylist._id);
+    await addUserPlaylistEntry(userId, existingPlaylist._id);
 
     return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
@@ -54,8 +60,8 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, user
     );
   }
 
-   // Fetch playlist data from YouTube
-   try {
+  // Fetch playlist data from YouTube
+  try {
     const playlistData = await fetchPlaylistData(playlistId);
 
     if (!playlistData) {
@@ -77,8 +83,11 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, user
         })
       );
     }
-    
-    const { error: userPlaylistError } = await addUserPlaylistEntry(userId, newPlaylist._id);
+
+    const { error: userPlaylistError } = await addUserPlaylistEntry(
+      userId,
+      newPlaylist._id
+    );
 
     if (userPlaylistError) {
       return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -87,7 +96,6 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, user
         error: userPlaylistError,
       });
     }
-   
 
     return res.status(apiStatusCodes.RESOURCE_CREATED).json(
       sendAPIResponse({
@@ -105,8 +113,11 @@ const handleAddPlaylist = async (req: NextApiRequest, res: NextApiResponse, user
   }
 };
 
-const handleGetPlaylists = async (req:NextApiRequest, res:NextApiResponse) => {
-  const { data, error} = await getPlaylistsFormDB();
+const handleGetPlaylists = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  const { data, error } = await getPlaylistsFormDB();
 
   if (error) {
     return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -123,7 +134,6 @@ const handleGetPlaylists = async (req:NextApiRequest, res:NextApiResponse) => {
       data,
     })
   );
-}
-
+};
 
 export default handler;
