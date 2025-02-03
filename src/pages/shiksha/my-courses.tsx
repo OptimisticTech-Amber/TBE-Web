@@ -63,7 +63,7 @@ const MyCourses = ({ seoMeta }: PageProps) => {
         focusText='Courses'
         cards={courses}
         borderColour={2}
-        subtext='Pick A Course and Start Learning'
+        subtext='Continue Learning From Where You Left'
         sectionClassName='px-2 py-4'
       />
       {noCourseFoundUI}
