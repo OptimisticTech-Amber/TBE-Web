@@ -12,7 +12,7 @@ import {
 } from '@/components';
 import { SheetPageProps } from '@/interfaces';
 import { getSheetPageProps } from '@/utils';
-import { useApi, useUser } from '@/hooks';
+import { useAnalytics, useApi, useUser } from '@/hooks';
 import { routes } from '@/constant';
 
 const SheetPage = ({
@@ -50,6 +50,7 @@ const SheetPage = ({
 
   const { makeRequest } = useApi(`interview-prep/${sheet}`);
   const { user } = useUser();
+  const { trackEvent } = useAnalytics();
 
   if (!sheet) return null;
 
@@ -70,6 +71,17 @@ const SheetPage = ({
           sheetId: sheet._id,
           questionId: currentQuestionId,
           isCompleted: newCompletionStatus,
+        },
+      });
+
+      trackEvent({
+        action: 'INTERVIEW_SHEET_PROGRESS',
+        category: 'InterviewSheet',
+        label: 'Interview Sheet Progress',
+        value: {
+          userId: user?.id,
+          sheetId: sheet._id,
+          questionId: currentQuestionId,
         },
       });
 

@@ -13,7 +13,7 @@ import {
 } from '@/components';
 import { ProjectPageProps } from '@/interfaces';
 import { getProjectPageProps, getSelectedProjectChapterMeta } from '@/utils';
-import { useApi, useUser } from '@/hooks';
+import { useAnalytics, useApi, useUser } from '@/hooks';
 import { routes } from '@/constant';
 
 const ProjectPage = ({
@@ -50,6 +50,7 @@ const ProjectPage = ({
 
   const { makeRequest } = useApi(`projects/${project._id}`);
   const { user } = useUser();
+  const { trackEvent } = useAnalytics();
 
   const handleChapterClick = ({ sectionId, chapterId }: any) => {
     const selectedChapter = getSelectedProjectChapterMeta(
@@ -81,6 +82,17 @@ const ProjectPage = ({
           )?.sectionId,
           chapterId: currentChapterId,
           isCompleted: newCompletionStatus,
+        },
+      });
+
+      trackEvent({
+        action: 'PROJECT_PROGRESS',
+        category: 'Project',
+        label: 'Project Progress',
+        value: {
+          userId: user?.id,
+          projectId: project._id,
+          chapterId: currentChapterId,
         },
       });
 

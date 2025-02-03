@@ -7,8 +7,8 @@ import {
   LoginWithGoogleButton,
 } from '@/components';
 import { projectGroupWhatsapp, routes } from '@/constant';
-import { useUser } from '@/hooks';
-import useApi from '@/hooks/useApi';
+import { useAnalytics, useUser } from '@/hooks';
+import { useApi } from '@/hooks';
 import { ProjectHeroContainerProps } from '@/interfaces';
 
 const ProjectHeroContainer = ({
@@ -19,6 +19,7 @@ const ProjectHeroContainer = ({
   isEnrolled,
 }: ProjectHeroContainerProps) => {
   const { user, isAuth } = useUser();
+  const { trackEvent } = useAnalytics();
   const { makeRequest, loading } = useApi('projects/enrollProject');
 
   const enrollProject = async () => {
@@ -31,6 +32,17 @@ const ProjectHeroContainer = ({
           projectId: id,
         },
       });
+
+      trackEvent({
+        action: 'PROJECT_ENROLL',
+        category: 'Project',
+        label: 'Project Enrolled',
+        value: {
+          userId: user?.id,
+          projectId: id,
+        },
+      });
+
       window.location.reload();
     } catch (error) {
       console.error('Failed to enroll in project', error);

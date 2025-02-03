@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-
-const GA_TRACKING_ID = 'G-XXXXXXXXXX'; // Replace with actual GA ID
+import { TrackEventProps } from '@/interfaces';
+import { envConfig } from '@/constant';
 
 export const useAnalytics = () => {
   const router = useRouter();
@@ -9,7 +9,7 @@ export const useAnalytics = () => {
   // Handle Route Changes (For Page Views)
   useEffect(() => {
     const handleRouteChange = (url: string) => {
-      window.gtag('config', GA_TRACKING_ID, {
+      window.gtag('config', envConfig.GA_TRACKING_ID, {
         page_path: url,
       });
     };
@@ -21,22 +21,12 @@ export const useAnalytics = () => {
   }, [router.events]);
 
   // Function to Track Custom Events
-  const trackEvent = ({
-    action,
-    category,
-    label,
-    value,
-  }: {
-    action: string;
-    category: string;
-    label?: string;
-    value?: number;
-  }) => {
+  const trackEvent = ({ action, category, label, value }: TrackEventProps) => {
     if (typeof window !== 'undefined' && window.gtag) {
       window.gtag('event', action, {
         event_category: category,
         event_label: label,
-        value: value,
+        value,
       });
     }
   };

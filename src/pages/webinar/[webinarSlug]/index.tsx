@@ -19,7 +19,7 @@ import {
   WebinarPageProps,
 } from '@/interfaces';
 import { formatDate, getWebinarPageProps } from '@/utils';
-import { useApi, useUser } from '@/hooks';
+import { useAnalytics, useApi, useUser } from '@/hooks';
 import { routes, TESTIMONIALS } from '@/constant';
 import { FiCalendar } from 'react-icons/fi';
 import { LuClock3 } from 'react-icons/lu';
@@ -44,6 +44,7 @@ const WebinarPage = ({
   recordedVideoUrl,
 }: WebinarPageProps) => {
   const { user, isAuth } = useUser();
+  const { trackEvent } = useAnalytics();
   const router = useRouter();
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
@@ -98,6 +99,16 @@ const WebinarPage = ({
         });
 
         if (status) {
+          trackEvent({
+            action: 'CERTIFICATE_GENERATED',
+            category: 'Webinar',
+            label: 'Certificate Generated',
+            value: {
+              userId: user?.id,
+              webinarId: webinarId,
+            },
+          });
+
           router.push(`/certificate/${data._id}`);
         }
       } else {
