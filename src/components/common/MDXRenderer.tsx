@@ -2,7 +2,11 @@ import React from 'react';
 import MarkdownIt from 'markdown-it';
 import { MDXRendererProps } from '@/interfaces';
 
+
+
 const MDXRenderer = ({ mdxSource, actions }: MDXRendererProps) => {
+
+
   const md = new MarkdownIt({
     html: true,
   });
@@ -64,7 +68,7 @@ const MDXRenderer = ({ mdxSource, actions }: MDXRendererProps) => {
     const lang = token.info.trim();
     const code = token.content;
 
-    return `<div class="overflow-x-auto"><pre class="bg-accent hover:bg-greyLight transition border px-2 py-1 rounded"><code class="language-${lang}">${md.utils.escapeHtml(
+    return `<div class="overflow-x-auto hover:bg-greyLight rounded bg-accent transition border px-2 py-1 "><pre class=" "><code class="language-${lang}">${md.utils.escapeHtml(
       code
       
     )}</code></pre></div>`;
@@ -92,3 +96,6 @@ const MDXRenderer = ({ mdxSource, actions }: MDXRendererProps) => {
 };
 
 export default MDXRenderer;
+
+
+
