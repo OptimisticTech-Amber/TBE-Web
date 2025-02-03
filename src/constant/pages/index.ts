@@ -58,9 +58,9 @@ const TOP_NAVIGATION: TopNavbarContainerProps = {
     },
     {
       id: v4(),
-      name: 'Join Campus Ambassador',
-      description: 'Join our Campus Ambassador Program',
-      href: LINKS.joinCampusAmbassador,
+      name: 'Join as DevRel Advocate',
+      description: 'Join our DevRel Advocate',
+      href: LINKS.joinDevRelAdvocate,
       target: '_blank',
     },
   ],

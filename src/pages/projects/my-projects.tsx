@@ -63,7 +63,7 @@ const MyProjects = ({ seoMeta }: PageProps) => {
         focusText='Projects'
         cards={projects}
         borderColour={2}
-        subtext='Pick A Project and Start Working'
+        subtext='Continue Learning From Where You Left'
         sectionClassName='px-2 py-4'
       />
       {noProjectFoundUI}

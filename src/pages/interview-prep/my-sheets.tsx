@@ -63,7 +63,7 @@ const MySheets = ({ seoMeta }: PageProps) => {
         focusText='Sheets'
         cards={sheets}
         borderColour={2}
-        subtext='Pick A Sheet and Start Learning'
+        subtext='Continue Your Interview Prep'
         sectionClassName='px-2 py-4'
       />
       {noSheetsFoundUI}

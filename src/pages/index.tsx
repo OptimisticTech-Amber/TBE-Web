@@ -79,10 +79,10 @@ const Home = ({ seoMeta }: PageProps) => {
         variant='VARIANT_A'
       />
       <Banner
-        title='Become Our Brand Ambassador!'
-        description='Represent us at Your Campus by Joining us as Campus Ambassador.'
+        title='Join as DevRel Advocate'
+        description='Join our Community as a DevRel Advocate and help us grow.'
         buttonText='Join us'
-        buttonLink={LINKS.joinCampusAmbassador}
+        buttonLink={LINKS.joinDevRelAdvocate}
         imageSrc={`${STATIC_FILE_PATH.svg}/community.svg`}
         variant='VARIANT_B'
       />
