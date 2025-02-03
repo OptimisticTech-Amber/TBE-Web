@@ -1,9 +1,11 @@
 import { useRef } from 'react';
 import { toPng } from 'html-to-image';
 import useUser from './useUser';
+import { useAnalytics } from './useAnalytics';
 
 export const useCertificate = () => {
   const { user } = useUser();
+  const { trackEvent } = useAnalytics();
 
   const certificateRef = useRef<HTMLDivElement>(null);
 
@@ -11,6 +13,16 @@ export const useCertificate = () => {
     if (!user) return;
     if (certificateRef.current) {
       try {
+        trackEvent({
+          action: 'CERTIFICATE_DOWNLOAD',
+          category: 'User',
+          label: 'Certificate Download',
+          value: {
+            user: user.name,
+            certificate: label,
+          },
+        });
+
         const dataUrl = await toPng(certificateRef.current, { quality: 1 });
         const link = document.createElement('a');
         link.href = dataUrl;

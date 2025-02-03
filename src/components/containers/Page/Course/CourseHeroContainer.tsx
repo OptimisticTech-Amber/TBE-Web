@@ -7,8 +7,8 @@ import {
   LinkButton,
 } from '@/components';
 import { routes } from '@/constant';
-import { useUser } from '@/hooks';
-import useApi from '@/hooks/useApi';
+import { useAnalytics, useUser } from '@/hooks';
+import { useApi } from '@/hooks';
 import { CourseHeroContainerProps } from '@/interfaces';
 
 const CourseHeroContainer = ({
@@ -17,6 +17,7 @@ const CourseHeroContainer = ({
   isEnrolled,
 }: CourseHeroContainerProps) => {
   const { user, isAuth } = useUser();
+  const { trackEvent } = useAnalytics();
 
   const { makeRequest, loading } = useApi('shiksha/enrollCourse');
 
@@ -30,10 +31,19 @@ const CourseHeroContainer = ({
       },
     })
       .then(() => {
+        trackEvent({
+          action: 'COURSE_ENROLL',
+          category: 'User',
+          label: 'Course Enrolled',
+          value: {
+            userId: user?.id,
+            courseId: id,
+          },
+        });
+
         window.location.reload();
       })
       .catch((error) => {
-        // TODO: Handle error
         console.error('Failed to enroll', error);
       });
   };

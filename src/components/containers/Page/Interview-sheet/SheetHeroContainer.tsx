@@ -7,8 +7,8 @@ import {
   LinkButton,
 } from '@/components';
 import { routes } from '@/constant';
-import { useUser } from '@/hooks';
-import useApi from '@/hooks/useApi';
+import { useAnalytics, useUser } from '@/hooks';
+import { useApi } from '@/hooks';
 import { SheetHeroContainerProps } from '@/interfaces';
 
 const SheetHeroContainer = ({
@@ -17,6 +17,7 @@ const SheetHeroContainer = ({
   isEnrolled,
 }: SheetHeroContainerProps) => {
   const { user, isAuth } = useUser();
+  const { trackEvent } = useAnalytics();
 
   const { makeRequest, loading } = useApi('interview-prep/enrollSheet');
 
@@ -30,6 +31,16 @@ const SheetHeroContainer = ({
       },
     })
       .then(() => {
+        trackEvent({
+          action: 'INTERVIEW_SHEET_ENROLL',
+          category: 'InterviewSheet',
+          label: 'Interview Sheet Enrolled',
+          value: {
+            userId: user?.id,
+            sheetId: id,
+          },
+        });
+
         window.location.reload();
       })
       .catch((error) => {

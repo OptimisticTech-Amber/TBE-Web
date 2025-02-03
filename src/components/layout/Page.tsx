@@ -1,4 +1,5 @@
 import { Footer, Navbar } from '@/components';
+import { envConfig } from '@/constant';
 import { PageLayoutProps } from '@/interfaces';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -7,8 +8,12 @@ const PageLayout = ({ children }: PageLayoutProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    const handleRouteChange = () => {
+    const handleRouteChange = (url: string) => {
       window.scrollTo(0, 0);
+
+      window.gtag('config', envConfig.GA_TRACKING_ID, {
+        page_path: url,
+      });
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
