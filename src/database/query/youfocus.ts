@@ -92,6 +92,27 @@ const getPlaylistByIDFromDB = async (
   }
 };
 
+// Get Playlist Video my Id Form DB
+const getPlaylistVideoByIDFromDB = async (
+  videoId: string
+): Promise<DatabaseQueryResponseType> => {
+  try {
+    const playlist = await Playlist.findOne({ "videos.videoId": videoId });
+
+    if (!playlist) {
+      return { error: "Video not found in any playlist" };
+    }
+
+    // Find the specific video in the playlist
+    const video = playlist.videos.find((v) => v.videoId === videoId);
+
+    return { data: video };
+  } catch (error) {
+    return { error: "An error occurred while fetching video" };
+  }
+};
+
+
 // Get all playlists of a user  from `UserPlaylist`
 const getUserPlaylistsFromDB = async (
   userId: string
@@ -139,4 +160,5 @@ export {
   getPlaylistByIDFromDB,
   getUserPlaylistsFromDB,
   deleteUserPlaylistFromDB,
+  getPlaylistVideoByIDFromDB,
 };
