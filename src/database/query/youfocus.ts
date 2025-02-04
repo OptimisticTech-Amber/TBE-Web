@@ -111,6 +111,26 @@ const getUserPlaylistsFromDB = async (
   }
 };
 
+// Delete a userPlaylist form DB
+const deleteUserPlaylistFromDB = async (
+  userId: string,
+  playlistId: string
+): Promise<DatabaseQueryResponseType> => {
+  try {
+    const userPlaylist = await UserPlaylist.findOneAndDelete({
+      userId,
+      playlistId,
+    });
+    if (!userPlaylist) {
+      return { error: 'UserPlaylist not found' };
+    }
+    return { data: userPlaylist };
+  } catch (error) {
+    return { error: 'An error occurred while deleting userPlaylist' };
+  }
+};
+
+
 export {
   addPlaylistToDB,
   checkPlaylistExistsByPlaylistId,
@@ -118,4 +138,5 @@ export {
   getPlaylistsFormDB,
   getPlaylistByIDFromDB,
   getUserPlaylistsFromDB,
+  deleteUserPlaylistFromDB,
 };
