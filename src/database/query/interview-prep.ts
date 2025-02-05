@@ -209,7 +209,12 @@ const getAllEnrolledSheetsFromDB = async (
       .exec();
 
     return {
-      data: enrolledSheets.map((sheet) => sheet.sheet),
+      data: enrolledSheets.map((sheet) => {
+        return {
+          ...sheet.sheet.toObject(),
+          isEnrolled: true,
+        };
+      }),
     };
   } catch (error) {
     return { error: 'Failed while fetching enrolled sheets' };

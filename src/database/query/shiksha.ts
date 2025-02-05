@@ -213,9 +213,12 @@ const getAllEnrolledCoursesFromDB = async (
       .exec();
 
     return {
-      data: enrolledCourse.map(
-        (course) => course.course
-      ) as unknown as BaseShikshaCourseResponseProps,
+      data: enrolledCourse.map((course) => {
+        return {
+          ...course.course.toObject(),
+          isEnrolled: true,
+        };
+      }) as unknown as BaseShikshaCourseResponseProps,
     };
   } catch (error) {
     return { error: 'Failed while fetching enrolled course' };

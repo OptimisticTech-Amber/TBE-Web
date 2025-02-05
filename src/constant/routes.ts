@@ -34,6 +34,7 @@ const routes = {
   certificate: '/certificate',
   contactUs: '/contact',
   user: {
+    dashboard: '/user/dashboard',
     courses: '/shiksha/my-courses',
     projects: '/projects/my-projects',
     sheets: '/interview-prep/my-sheets',
@@ -93,6 +94,7 @@ const routes = {
     certificate: '/certificate',
     certificateById: (certificate: string) => `/certificate/${certificate}`,
     youfocusPlaylist: '/youfocus/playlist',
+    userDashboard: '/user/dashboard',
   },
 };
 

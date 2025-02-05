@@ -496,8 +496,7 @@ const enrollInAProject = async ({
 
     return { data: userProject };
   } catch (error) {
-    console.error('Error enrolling in project:', error);
-    return { error: 'Failed while enrolling in a project' };
+    return { error: `Failed while enrolling in a project ${error}` };
   }
 };
 

@@ -67,18 +67,8 @@ const TOP_NAVIGATION: TopNavbarContainerProps = {
   user: [
     {
       id: v4(),
-      name: 'My Courses',
-      href: routes.user.courses,
-    },
-    {
-      id: v4(),
-      name: 'My Projects',
-      href: routes.user.projects,
-    },
-    {
-      id: v4(),
-      name: 'My Sheets',
-      href: routes.user.sheets,
+      name: 'Dashboard',
+      href: routes.user.dashboard,
     },
   ],
 };

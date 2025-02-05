@@ -72,18 +72,35 @@ const removeLocalStorageItem = (key: string) => {
   }
 };
 
-const mapProjectResponseToCard = (projectsData: ProjectDocumentModel[]) => {
+const mapProjectResponseToCard = (
+  projectsData: ProjectDocumentModel[],
+  addtionalParams: any
+) => {
+  const { isEnrolled } = addtionalParams;
+
   return projectsData?.map(
-    ({ _id, coverImageURL, name, description, slug, isActive }) => ({
-      id: _id,
-      image: coverImageURL,
-      imageAltText: name,
-      title: name,
-      content: description,
-      href: `/projects/${slug}?projectId=${_id}`,
-      active: isActive,
-      ctaText: isActive ? 'Start The Project' : 'Coming Soon',
-    })
+    ({ _id, coverImageURL, name, description, slug, isActive }) => {
+      let ctaText = 'Start The Project';
+
+      if (!isActive) {
+        ctaText = 'Coming Soon';
+      }
+
+      if (isEnrolled) {
+        ctaText = 'Continue Building';
+      }
+
+      return {
+        id: _id,
+        image: coverImageURL,
+        imageAltText: name,
+        title: name,
+        content: description,
+        href: `/projects/${slug}?projectId=${_id}`,
+        active: isActive,
+        ctaText,
+      };
+    }
   );
 };
 
@@ -173,10 +190,6 @@ const mapCourseResponseToCard = (
       let ctaText = 'Coming Soon';
       let launchingOn = '';
 
-      if (isEnrolled) {
-        ctaText = 'Continue Learning';
-      }
-
       if (isActive) {
         ctaText = 'View Course';
       } else {
@@ -185,6 +198,10 @@ const mapCourseResponseToCard = (
           dateAndTime: date.toString(),
         });
         launchingOn = `Launching on ${dateAndTime.date} at ${dateAndTime.time}`;
+      }
+
+      if (isEnrolled) {
+        ctaText = 'Continue Learning';
       }
 
       return {
@@ -221,10 +238,6 @@ const mapInterviewSheetResponseToCard = (
       let ctaText = 'Coming Soon';
       let launchingOn = '';
 
-      if (isEnrolled) {
-        ctaText = 'Continue Learning';
-      }
-
       if (isActive) {
         ctaText = 'View Sheet';
       } else {
@@ -235,6 +248,10 @@ const mapInterviewSheetResponseToCard = (
           day: 'numeric',
           hour: 'numeric',
         })}`;
+      }
+
+      if (isEnrolled) {
+        ctaText = 'Continue Preparing';
       }
 
       return {

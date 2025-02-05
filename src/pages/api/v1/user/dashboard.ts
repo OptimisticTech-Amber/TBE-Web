@@ -6,7 +6,6 @@ import {
   getAllEnrolledCoursesFromDB,
   getAllEnrolledProjectsFromDB,
   getAllEnrolledSheetsFromDB,
-  getUserByEmailFromDB,
   getUserByIdFromDB,
 } from '@/database';
 
@@ -14,28 +13,22 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
 
   const { method, query } = req;
-  const { email, userId } = query;
+  const { userId } = query;
 
   switch (method) {
     case 'GET':
-      return handleGetUserDashboard(
-        req,
-        res,
-        email as string,
-        userId as string
-      );
+      return handleGetUserDashboard(req, res, userId as string);
   }
 };
 
 const handleGetUserDashboard = async (
   req: NextApiRequest,
   res: NextApiResponse,
-  email: string,
   userId: string
 ) => {
   try {
-    if (email) {
-      const { error } = await getUserByEmailFromDB(email);
+    if (userId) {
+      const { error } = await getUserByIdFromDB(userId);
 
       if (error) {
         return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(

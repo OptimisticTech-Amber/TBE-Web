@@ -208,6 +208,16 @@ const getSEOMeta = (basePath: any): GetSEOMetaResponseType => {
       ...seoCommonMeta,
     },
     // Implement User Shiksha Route
+    [`${routes.user.dashboard}`]: {
+      title: 'Dashboard | The Boring Education',
+      siteName: 'User Dashboard at The Boring Education',
+      description:
+        'Access your courses, projects, and interview preparation sheets at The Boring Education.',
+      url: routes.user.dashboard,
+      keywords:
+        'Dashboard, Online Learning, The Boring Education, User Dashboard, Learning Platform, The Boring Education, College Students, Working Professionals, Career Development, Skill Enhancement, GitHub, Instagram, Twitter, LinkedIn',
+      ...seoCommonMeta,
+    },
     [`${routes.user.courses}`]: {
       title: 'My Courses | The Boring Education',
       siteName: 'My Courses at The Boring Education',
@@ -218,7 +228,6 @@ const getSEOMeta = (basePath: any): GetSEOMetaResponseType => {
         'My Courses, Online Learning, The Boring Education, Enrolled Courses, Learning Platform, The Boring Education, College Students, Working Professionals, Career Development, Skill Enhancement, GitHub, Instagram, Twitter, LinkedIn',
       ...seoCommonMeta,
     },
-    // Implement User Projects Route
     [`${routes.user.projects}`]: {
       title: 'My Projects | The Boring Education',
       siteName: 'My Projects at The Boring Education',
