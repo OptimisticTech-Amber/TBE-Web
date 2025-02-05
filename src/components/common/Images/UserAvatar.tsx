@@ -23,7 +23,7 @@ const UserAvatar = () => {
             >
               <Image
                 src={session.data.user?.image || ''}
-                alt={session.data.user?.name || ''}
+                alt={`${session.data.user?.name} | The Boring Education` || ''}
                 className='rounded-[50%] '
               />
             </Popover.Button>
