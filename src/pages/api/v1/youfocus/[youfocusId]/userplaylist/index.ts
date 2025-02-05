@@ -108,13 +108,24 @@ const handleUserPlaylistTime = async (
   userId: string,
   playlistId: string
 ) => {
-  const { minutes = 0, seconds = 0 } = req.body;
+  const { minutes } = req.body;
+  
+  console.log("Received minutes:", minutes, "Type:", typeof minutes); // Debugging
+  
+  if (typeof minutes !== "number" || isNaN(minutes)) {
+    return res.status(apiStatusCodes.BAD_REQUEST).json(
+      sendAPIResponse({
+        status: false,
+        message: 'Invalid minutes value',
+      })
+    );
+  }
 
   try {
     const updateResponse = await updateUserPlaylistWatchTime(
       userId,
       playlistId,
-      { minutes, seconds }
+      minutes
     );
 
     if (updateResponse.error) {
@@ -125,7 +136,7 @@ const handleUserPlaylistTime = async (
         })
       );
     }
-    
+
     return res.status(apiStatusCodes.OKAY).json(
       sendAPIResponse({
         status: true,
@@ -133,9 +144,7 @@ const handleUserPlaylistTime = async (
         data: updateResponse.data, // Return updated data for debugging
       })
     );
-
   } catch (error) {
-
     return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
       sendAPIResponse({
         status: false,
@@ -145,7 +154,6 @@ const handleUserPlaylistTime = async (
     );
   }
 };
-
 
 
 

@@ -2,17 +2,6 @@ import { Schema, model, models, Model } from 'mongoose';
 import { UserPlaylistModel } from '@/interfaces';
 import { databaseModels } from '@/constant';
 
-
-// Schema to track total time watched for the playlist
-const TimeSchema = new Schema(
-  {
-    minutes: { type: Number, default: 0 },
-    seconds: { type: Number, default: 0 },
-    
-  },
-  { _id: false }
-);
-
 // Define UserPlaylist schema and model
 const UserPlaylistSchema = new Schema<UserPlaylistModel>(
   {
@@ -30,10 +19,10 @@ const UserPlaylistSchema = new Schema<UserPlaylistModel>(
       type: Boolean,
       default: false,
     },
-    timeWatched: {
-      type: TimeSchema,
-      default: { minutes: 0, seconds: 0 }, // Ensure default value
-    },
+    learningTime: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );

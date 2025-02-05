@@ -146,10 +146,7 @@ export interface UserPlaylistModel {
   playlistId: typeof Schema.Types.ObjectId;
   playlist: PlaylistModel;
   isPublic: boolean;
-  timeWatched: {
-    minutes: number;
-    seconds: number;
-  };
+  learningTime: number;
 }
 
 export interface WebinarModel {

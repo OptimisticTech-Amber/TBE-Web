@@ -150,31 +150,33 @@ const deleteUserPlaylistFromDB = async (
   }
 };
 
-// Update the time watched for a playlist
 const updateUserPlaylistWatchTime = async (
   userId: string,
   playlistId: string,
-  time: {
-    minutes: number;
-    seconds: number;
-  }
+  time: number
 ): Promise<DatabaseQueryResponseType> => {
   try {
-    const updatedPlaylist = await UserPlaylist.findOneAndUpdate(
-      { userId, playlistId },
-      { $set: { timeWatched: time } },
-      { new: true, upsert: true }
-    ).lean();
+    console.log("Updating watch time with:", time);
 
-    if (!updatedPlaylist) {
-      return { error: 'UserPlaylist not found' };
+    const userPlaylist = await UserPlaylist.findOneAndUpdate(
+      { userId, playlistId },
+      { $set: { learningTime: time } },
+      { new: true }
+    );
+
+    if (!userPlaylist) {
+      return { error: "UserPlaylist not found" };
     }
 
-    return { data: updatedPlaylist };
+    console.log("Updated userPlaylist:", userPlaylist);
+
+    return { data: userPlaylist };
   } catch (error) {
-    return { error: 'Database error' };
+    console.error("Error updating watch time:", error);
+    return { error: "An error occurred while updating watch time" };
   }
 };
+
 
 export {
   addPlaylistToDB,
