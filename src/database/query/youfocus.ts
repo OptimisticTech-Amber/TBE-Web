@@ -151,6 +151,25 @@ const deleteUserPlaylistFromDB = async (
   }
 };
 
+const updateUserPlaylistWatchTime = async (userId: string, playlistId: string, time: { minutes: number; seconds: number }) => {
+  try {
+    const updatedPlaylist = await UserPlaylist.findOneAndUpdate(
+      { userId, playlistId },
+      { $set: { timeWatched: time } }, // Explicitly set timeWatched
+      { new: true, upsert: true } // Ensures update works & creates if not exist
+    ).lean();
+
+    if (!updatedPlaylist) {
+      return { error: true, message: 'UserPlaylist not found' };
+    }
+
+    return { error: false, data: updatedPlaylist };
+  } catch (error) {
+    console.error('Error updating timeWatched:', error);
+    return { error: true, message: 'Database error' };
+  }
+};
+
 
 export {
   addPlaylistToDB,
@@ -161,4 +180,5 @@ export {
   getUserPlaylistsFromDB,
   deleteUserPlaylistFromDB,
   getPlaylistVideoByIDFromDB,
+  updateUserPlaylistWatchTime,
 };

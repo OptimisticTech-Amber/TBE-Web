@@ -2,7 +2,11 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { connectDB } from '@/middlewares';
 import { apiStatusCodes } from '@/constant';
 import { sendAPIResponse } from '@/utils';
-import { getUserPlaylistsFromDB, deleteUserPlaylistFromDB } from '@/database';
+import { 
+  getUserPlaylistsFromDB,
+  deleteUserPlaylistFromDB,
+  updateUserPlaylistWatchTime,
+} from '@/database';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
@@ -14,6 +18,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   };
 
   switch (method) {
+    case 'POST':
+      return handleUserPlaylistTime(req, res, userId, playlistId);
     case 'GET':
       return handleGetUserPlaylists(req, res, userId);
     case 'DELETE':
@@ -96,5 +102,52 @@ const handleDeleteUserPlaylist = async (
     );
   }
 };
+
+const handleUserPlaylistTime = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  userId: string,
+  playlistId: string
+) => {
+  const { minutes = 0, seconds = 0 } = req.body;
+
+  try {
+    const updateResponse = await updateUserPlaylistWatchTime(
+      userId,
+      playlistId,
+      { minutes, seconds }
+    );
+
+    if (updateResponse.error) {
+      return res.status(apiStatusCodes.NOT_FOUND).json(
+        sendAPIResponse({
+          status: false,
+          message: 'UserPlaylist not found',
+        })
+      );
+    }
+    
+    return res.status(apiStatusCodes.OKAY).json(
+      sendAPIResponse({
+        status: true,
+        message: 'User playlist time updated successfully',
+        data: updateResponse.data, // Return updated data for debugging
+      })
+    );
+
+  } catch (error) {
+
+    return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
+      sendAPIResponse({
+        status: false,
+        message: 'Error updating user playlist time',
+        error,
+      })
+    );
+  }
+};
+
+
+
 
 export default handler;
