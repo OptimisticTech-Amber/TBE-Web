@@ -39,7 +39,7 @@ const handleGetAllUserSheets = async (
   userId: string
 ) => {
   try {
-    const { data: allInterviewSheets, error: fetchEnrolledSheetsError } =
+    const { data: allUserSheets, error: fetchEnrolledSheetsError } =
       await getAllEnrolledSheetsFromDB(userId);
 
     if (fetchEnrolledSheetsError)
@@ -53,7 +53,7 @@ const handleGetAllUserSheets = async (
     return res.status(apiStatusCodes.OKAY).json(
       sendAPIResponse({
         status: true,
-        data: allInterviewSheets,
+        data: allUserSheets,
       })
     );
   } catch (error) {

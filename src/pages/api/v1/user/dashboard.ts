@@ -1,0 +1,114 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+import { apiStatusCodes } from '@/constant';
+import { sendAPIResponse } from '@/utils';
+import { connectDB } from '@/middlewares';
+import {
+  getAllEnrolledCoursesFromDB,
+  getAllEnrolledProjectsFromDB,
+  getAllEnrolledSheetsFromDB,
+  getUserByEmailFromDB,
+  getUserByIdFromDB,
+} from '@/database';
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  await connectDB();
+
+  const { method, query } = req;
+  const { email, userId } = query;
+
+  switch (method) {
+    case 'GET':
+      return handleGetUserDashboard(
+        req,
+        res,
+        email as string,
+        userId as string
+      );
+  }
+};
+
+const handleGetUserDashboard = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  email: string,
+  userId: string
+) => {
+  try {
+    if (email) {
+      const { error } = await getUserByEmailFromDB(email);
+
+      if (error) {
+        return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
+          sendAPIResponse({
+            status: false,
+            error,
+            message: 'Error while fetching user',
+          })
+        );
+      }
+
+      // Fetch User Dashboard
+      let enrolledCourses = [];
+      let enrolledProjects = [];
+      let enrolledSheets = [];
+
+      // 1. Shiksha
+      const { data: allCourses } = await getAllEnrolledCoursesFromDB(userId);
+      if (allCourses) enrolledCourses = allCourses;
+
+      // 2. Projects
+      const { data: allProjects } = await getAllEnrolledProjectsFromDB(userId);
+      if (allProjects) enrolledProjects = allProjects;
+
+      // 3. Interview Sheets
+      const { data: allUserSheets } = await getAllEnrolledSheetsFromDB(userId);
+      if (allUserSheets) enrolledSheets = allUserSheets;
+
+      const userDashboard = {
+        enrolledCourses,
+        enrolledProjects,
+        enrolledSheets,
+      };
+
+      return res
+        .status(apiStatusCodes.OKAY)
+        .json(sendAPIResponse({ status: true, data: userDashboard }));
+    }
+
+    if (userId) {
+      const { data, error } = await getUserByIdFromDB(userId);
+
+      if (error) {
+        return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
+          sendAPIResponse({
+            status: false,
+            error,
+            message: 'Error while fetching user',
+          })
+        );
+      }
+
+      return res
+        .status(apiStatusCodes.OKAY)
+        .json(sendAPIResponse({ status: true, data }));
+    }
+
+    return res.status(apiStatusCodes.BAD_REQUEST).json(
+      sendAPIResponse({
+        status: false,
+        message: 'Please provide Email or User id',
+        error: 'Please provide Email or User id',
+      })
+    );
+  } catch (error) {
+    return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
+      sendAPIResponse({
+        status: false,
+        error,
+        message: 'error while fetching user',
+      })
+    );
+  }
+};
+
+export default handler;

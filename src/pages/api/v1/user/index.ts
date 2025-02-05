@@ -133,7 +133,6 @@ const handleCreateUser = async (req: NextApiRequest, res: NextApiResponse) => {
       );
     }
   } catch (error) {
-    console.log(error);
     return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
       sendAPIResponse({
         status: false,

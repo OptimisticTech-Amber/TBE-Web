@@ -97,10 +97,10 @@ const getPlaylistVideoByIDFromDB = async (
   videoId: string
 ): Promise<DatabaseQueryResponseType> => {
   try {
-    const playlist = await Playlist.findOne({ "videos.videoId": videoId });
+    const playlist = await Playlist.findOne({ 'videos.videoId': videoId });
 
     if (!playlist) {
-      return { error: "Video not found in any playlist" };
+      return { error: 'Video not found in any playlist' };
     }
 
     // Find the specific video in the playlist
@@ -108,10 +108,9 @@ const getPlaylistVideoByIDFromDB = async (
 
     return { data: video };
   } catch (error) {
-    return { error: "An error occurred while fetching video" };
+    return { error: 'An error occurred while fetching video' };
   }
 };
-
 
 // Get all playlists of a user  from `UserPlaylist`
 const getUserPlaylistsFromDB = async (
@@ -150,7 +149,6 @@ const deleteUserPlaylistFromDB = async (
     return { error: 'An error occurred while deleting userPlaylist' };
   }
 };
-
 
 export {
   addPlaylistToDB,
