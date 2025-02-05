@@ -146,6 +146,7 @@ export interface UserPlaylistModel {
   playlistId: typeof Schema.Types.ObjectId;
   playlist: PlaylistModel;
   isPublic: boolean;
+  learningTime: number;
 }
 
 export interface WebinarModel {

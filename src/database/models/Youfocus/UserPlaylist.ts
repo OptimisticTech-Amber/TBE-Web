@@ -19,6 +19,10 @@ const UserPlaylistSchema = new Schema<UserPlaylistModel>(
       type: Boolean,
       default: false,
     },
+    learningTime: {
+      type: Number,
+      default: 0,
+    }
   },
   { timestamps: true }
 );
