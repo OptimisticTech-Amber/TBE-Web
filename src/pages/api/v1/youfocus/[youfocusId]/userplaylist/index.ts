@@ -110,8 +110,6 @@ const handleUserPlaylistTime = async (
 ) => {
   const { minutes } = req.body;
   
-  console.log("Received minutes:", minutes, "Type:", typeof minutes); // Debugging
-  
   if (typeof minutes !== "number" || isNaN(minutes)) {
     return res.status(apiStatusCodes.BAD_REQUEST).json(
       sendAPIResponse({
@@ -122,13 +120,13 @@ const handleUserPlaylistTime = async (
   }
 
   try {
-    const updateResponse = await updateUserPlaylistWatchTime(
+    const {data, error} = await updateUserPlaylistWatchTime(
       userId,
       playlistId,
       minutes
     );
 
-    if (updateResponse.error) {
+    if (error) {
       return res.status(apiStatusCodes.NOT_FOUND).json(
         sendAPIResponse({
           status: false,
@@ -141,7 +139,7 @@ const handleUserPlaylistTime = async (
       sendAPIResponse({
         status: true,
         message: 'User playlist time updated successfully',
-        data: updateResponse.data, // Return updated data for debugging
+        data // Return updated data for debugging
       })
     );
   } catch (error) {
