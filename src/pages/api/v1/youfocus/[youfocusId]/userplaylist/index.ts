@@ -13,8 +13,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const { method, query } = req;
   const { userId, playlistId } = query as {
-    userId: string,
-    playlistId: string
+    userId: string;
+    playlistId: string;
   };
 
   switch (method) {
@@ -75,7 +75,7 @@ const handleDeleteUserPlaylist = async (
 ) => {
   try {
     const deleteResponse = await deleteUserPlaylistFromDB(userId, playlistId);
-    
+
     if (deleteResponse.error) {
       return res.status(apiStatusCodes.NOT_FOUND).json(
         sendAPIResponse({
@@ -84,14 +84,13 @@ const handleDeleteUserPlaylist = async (
         })
       );
     }
-    
+
     return res.status(apiStatusCodes.OKAY).json(
       sendAPIResponse({
         status: true,
         message: 'User playlist deleted successfully',
       })
     );
-    
   } catch (error) {
     return res.status(apiStatusCodes.INTERNAL_SERVER_ERROR).json(
       sendAPIResponse({
