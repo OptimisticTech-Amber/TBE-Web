@@ -138,6 +138,7 @@ export interface PlaylistModel {
   playlistName: string;
   description?: string;
   referrerBy?: number;
+  thumbnail?: string;
   tags?: string[];
   videos: Video[];
 }
@@ -147,6 +148,7 @@ export interface UserPlaylistModel {
   playlist: PlaylistModel;
   isPublic: boolean;
   learningTime: number;
+  isRecommended?: boolean;
 }
 
 export interface WebinarModel {
