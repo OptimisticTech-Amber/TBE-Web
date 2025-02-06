@@ -48,7 +48,7 @@ const routes = {
   },
   // YouFocus
   youfocus: '/youfocus',
-  addPlaylist: '/youfocus/add',
+  addPlaylist: '/youfocus/addplaylist',
   explorePlaylist: '/youfocus/explore-playlist',
   404: '/404',
   api: {
@@ -93,7 +93,7 @@ const routes = {
     webinarBySlug: (webinar: string) => `/webinar/${webinar}`,
     certificate: '/certificate',
     certificateById: (certificate: string) => `/certificate/${certificate}`,
-    youfocusPlaylist: '/youfocus/playlist',
+    youfocusPlaylist: '/youfocus',
     userDashboard: '/user/dashboard',
   },
 };

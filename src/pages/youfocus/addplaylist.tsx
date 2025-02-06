@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { PageProps } from '@/interfaces';
+import { useRouter } from 'next/router';
 import {
   Button,
   FlexContainer,
@@ -9,43 +10,54 @@ import {
   InputFieldContainer,
 } from '@/components';
 import { getPreFetchProps } from '@/utils';
-import { useApi } from '@/hooks';
+import { useApi, useUser } from '@/hooks';
 import { routes } from '@/constant';
 
 const Home = ({ seoMeta }: PageProps) => {
-  const [playlistLink, setPlaylistLink] = useState<string | null>(null);
+  const { user } = useUser();
+  const userId = user?.id;
+  const router = useRouter();
+
+  const [playlistUrl, setPlaylistUrl] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
   const handleInputChange = (value: string) => {
-    setPlaylistLink(value);
-  };
+    setPlaylistUrl(value);
+    setError(null);
 
-  const { makeRequest, loading } = useApi(`add/${playlistLink}`);
+  }
+
+  const { makeRequest, loading } = useApi('youfocus-add-playlist');
 
   const handleAddPlaylist = async () => {
-    if (!playlistLink) {
+    if (!playlistUrl) {
       setError('Playlist link is required');
-      // setTimeout(() => setError(null), 2000);
       return;
     }
 
     try {
       const response = await makeRequest({
         method: 'POST',
-        url: routes.api.youfocusPlaylist,
-        body: { playlistLink },
+        url: `${routes.api.youfocusPlaylist}?userId=${userId}`,
+        body: { playlistUrl },
       });
+      // console.log(response);
       const { status } = response;
-      if (!status) {
+      if (status) {
+        setSuccess('Playlist added successfully! Redirecting...');
+        setPlaylistUrl('');
+        // setTimeout(() => {
+        //   router.push('/playlists'); // Redirect after 2 seconds
+        // }, 2000);
+      } else {
         setError(response.message || 'Failed to add playlist');
-        // setTimeout(() => setError(null), 2000);
       }
-      //If successful Handle at backend and redirect to playlist
     } catch (error) {
       setError('Failed to add playlist. Please try again later.');
-      // setTimeout(() => setError(null), 2000);
     }
   };
+
 
   return (
     <React.Fragment>
@@ -65,12 +77,13 @@ const Home = ({ seoMeta }: PageProps) => {
               onChange={handleInputChange}
               className='md:w-1/2 md:px-5 text-black'
             />
-            {error && <p className='error'>{error}</p>}
+            {error && <p className='error text-red-500'>{error}</p>}
+            {success && <p className='success text-green-500'>{success}</p>}
             <Button
               variant='PRIMARY'
               className=''
               text='Add Playlist'
-              active={!!playlistLink || !error}
+              active={!!playlistUrl || !error}
               isLoading={loading}
               onClick={handleAddPlaylist}
             />
