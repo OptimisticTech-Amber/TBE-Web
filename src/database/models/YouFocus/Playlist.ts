@@ -28,6 +28,10 @@ const PlaylistSchema = new Schema<PlaylistModel>(
       type: Number,
       default: 0,
     },
+    thumbnail:{
+      type: String,
+      required: [true, 'Thumbnail URL is required'],
+    },
     tags: {
       type: [String],
     },
