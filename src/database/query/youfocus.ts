@@ -178,7 +178,7 @@ const updateUserPlaylistWatchTime = async (
 };
 
 
-const RecommendedPlaylist = async (
+const recommendedPlaylist = async (
   userId: string,
   playlistId: string
 ): Promise<DatabaseQueryResponseType> => {
