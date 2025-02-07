@@ -235,5 +235,5 @@ export {
   deleteUserPlaylistFromDB,
   getPlaylistVideoByIDFromDB,
   updateUserPlaylistWatchTime,
-  RecommendedPlaylist
+  recommendedPlaylist
 };
