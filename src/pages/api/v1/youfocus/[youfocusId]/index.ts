@@ -2,17 +2,19 @@ import { apiStatusCodes } from '@/constant';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { sendAPIResponse } from '@/utils';
 import { connectDB } from '@/middlewares';
-import { getPlaylistByIDFromDB } from '@/database';
+import { getPlaylistByIDFromDB, RecommendedPlaylist } from '@/database';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
 
   const { query } = req;
-  const { youfocusId } = query as { youfocusId: string };
+  const { youfocusId, userId } = query as { youfocusId: string, userId: string };
 
   switch (req.method) {
     case 'GET':
       return handleGetYouFocusById(req, res, youfocusId);
+    case 'PUT':
+      return handleRecommendedPlaylist(req, res, youfocusId, userId); 
     default:
       return res.status(apiStatusCodes.BAD_REQUEST).json(
         sendAPIResponse({
@@ -61,6 +63,32 @@ const handleGetYouFocusById = async (
     sendAPIResponse({
       status: true,
       message: 'YouFocus fetched successfully',
+      data,
+    })
+  );
+};
+
+const handleRecommendedPlaylist = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+  youfocusId: string,
+  userId: string
+) => {
+  const { data, error } = await RecommendedPlaylist(userId, youfocusId);
+  
+  if (error) {
+    return res.status(apiStatusCodes.BAD_REQUEST).json(
+      sendAPIResponse({
+        status: false,
+        message: error, 
+      })
+    );
+  }
+  
+  return res.status(apiStatusCodes.OKAY).json(
+    sendAPIResponse({
+      status: true,
+      message: 'Playlist recommended successfully',
       data,
     })
   );
