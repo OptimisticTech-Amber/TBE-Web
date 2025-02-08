@@ -12,7 +12,7 @@ const useAPIResponseMapper = (
       const mappedData = mappingFunction(data, addtionalParams);
       setMappedData(mappedData);
     }
-  }, [data, mappingFunction, addtionalParams]);
+  }, [data, mappingFunction]);
 
   return mappedData;
 };
