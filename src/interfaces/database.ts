@@ -184,3 +184,11 @@ export interface CertificateModel extends Document {
   programName: string;
   programId: typeof Schema.Types.ObjectId;
 }
+
+export interface NotificationModel extends Document {
+  type: string;
+  text: string;
+  isHTML: boolean;
+  link?: string;
+  isExternalLink: boolean;
+}

@@ -310,8 +310,9 @@ const fetchPlaylistData = async (
   accumulatedVideos: Video[] = [],
   metadata: {
     playlistName?: string;
-    description?: string,
-   thumbnail?: string  } = {}
+    description?: string;
+    thumbnail?: string;
+  } = {}
 ): Promise<PlaylistModel> => {
   const response = await fetch(
     `${YOUTUBE_API_PATH}/playlistItems?part=snippet&playlistId=${playlistId}&maxResults=50&pageToken=${pageToken}&key=${process.env.YOUTUBE_API_KEY}`
@@ -329,7 +330,6 @@ const fetchPlaylistData = async (
       data.items[0].snippet.description || 'No Description Available';
     metadata.thumbnail = data.items[0].snippet.thumbnails?.maxres?.url || '';
   }
-
 
   // Extract video details
   const videos: Video[] = data.items.map((item: any) => ({

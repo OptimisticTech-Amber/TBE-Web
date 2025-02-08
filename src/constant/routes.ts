@@ -95,6 +95,7 @@ const routes = {
     certificateById: (certificate: string) => `/certificate/${certificate}`,
     youfocusPlaylist: '/youfocus',
     userDashboard: '/user/dashboard',
+    notification: '/notification',
   },
 };
 

@@ -8,13 +8,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   await connectDB();
 
   const { query } = req;
-  const { youfocusId, userId } = query as { youfocusId: string, userId: string };
+  const { youfocusId, userId } = query as {
+    youfocusId: string;
+    userId: string;
+  };
 
   switch (req.method) {
     case 'GET':
       return handleGetYouFocusById(req, res, youfocusId);
     case 'PUT':
-      return handleRecommendedPlaylist(req, res, youfocusId, userId); 
+      return handleRecommendedPlaylist(req, res, youfocusId, userId);
     default:
       return res.status(apiStatusCodes.BAD_REQUEST).json(
         sendAPIResponse({
@@ -75,16 +78,16 @@ const handleRecommendedPlaylist = async (
   userId: string
 ) => {
   const { data, error } = await RecommendedPlaylist(userId, youfocusId);
-  
+
   if (error) {
     return res.status(apiStatusCodes.BAD_REQUEST).json(
       sendAPIResponse({
         status: false,
-        message: error, 
+        message: error,
       })
     );
   }
-  
+
   return res.status(apiStatusCodes.OKAY).json(
     sendAPIResponse({
       status: true,

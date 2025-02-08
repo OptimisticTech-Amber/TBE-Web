@@ -11,7 +11,7 @@ const SectionHeaderContainer = ({
 }: SectionHeaderProps) => {
   return (
     <FlexContainer
-      className={`w-full ${className}`}
+      className={`w-full gap-1 ${className}`}
       {...flexContainerProps}
       direction='col'
     >

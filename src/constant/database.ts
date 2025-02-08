@@ -12,6 +12,7 @@ const databaseModels = {
   USER_PLAYLIST: 'UserPlaylist',
   WEBINAR: 'Webinar',
   CERTIFICATE: 'Certificate',
+  NOTIFICATION: 'Notification',
 };
 
 const modelSelectParams = {

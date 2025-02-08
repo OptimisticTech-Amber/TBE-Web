@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { connectDB } from '@/middlewares';
 import { apiStatusCodes } from '@/constant';
 import { sendAPIResponse } from '@/utils';
-import { 
+import {
   getUserPlaylistsFromDB,
   deleteUserPlaylistFromDB,
   updateUserPlaylistWatchTime,
@@ -109,8 +109,8 @@ const handleUserPlaylistTime = async (
   playlistId: string
 ) => {
   const { minutes } = req.body;
-  
-  if (typeof minutes !== "number" || isNaN(minutes)) {
+
+  if (typeof minutes !== 'number' || isNaN(minutes)) {
     return res.status(apiStatusCodes.BAD_REQUEST).json(
       sendAPIResponse({
         status: false,
@@ -120,7 +120,7 @@ const handleUserPlaylistTime = async (
   }
 
   try {
-    const {data, error} = await updateUserPlaylistWatchTime(
+    const { data, error } = await updateUserPlaylistWatchTime(
       userId,
       playlistId,
       minutes
@@ -139,7 +139,7 @@ const handleUserPlaylistTime = async (
       sendAPIResponse({
         status: true,
         message: 'User playlist time updated successfully',
-        data 
+        data,
       })
     );
   } catch (error) {
@@ -152,7 +152,5 @@ const handleUserPlaylistTime = async (
     );
   }
 };
-
-
 
 export default handler;

@@ -9,6 +9,8 @@ import {
   Text,
   LinkButton,
   SEO,
+  Section,
+  NotificationContainer,
 } from '@/components';
 import { useAPIResponseMapper, useApi, useUser } from '@/hooks';
 import {
@@ -22,17 +24,14 @@ import { routes } from '@/constant';
 const MyCourses = ({ seoMeta }: PageProps) => {
   const session = useSession();
   const router = useRouter();
-
   const { user } = useUser();
-
-  const userId = user?.id;
 
   const { response, loading } = useApi(
     'user-dashboard',
     {
-      url: `${routes.api.userDashboard}?userId=${userId}`,
+      url: `${routes.api.userDashboard}?userId=${user?.id}`,
     },
-    { enabled: !!userId }
+    { enabled: !!user?.id }
   );
 
   const courses: PrimaryCardWithCTAProps[] = useAPIResponseMapper(
@@ -79,15 +78,18 @@ const MyCourses = ({ seoMeta }: PageProps) => {
   return (
     <Fragment>
       <SEO seoMeta={seoMeta} />
-      <CardContainerB
-        heading='Your'
-        focusText='Learning Space'
-        cards={courses.concat(projects).concat(interviewSheets)}
-        borderColour={2}
-        subtext='Continue Learning From Where You Left'
-        sectionClassName='px-2 py-4'
-      />
-      {noCourseFoundUI}
+      <Section className='md:px-2 md:py-4 px-0'>
+        <CardContainerB
+          heading='Your'
+          focusText='Learning Space'
+          cards={courses.concat(projects).concat(interviewSheets)}
+          borderColour={2}
+          subtext='Continue Learning From Where You Left'
+          sectionClassName='px-2 py-4'
+        />
+        {noCourseFoundUI}
+        <NotificationContainer />
+      </Section>
     </Fragment>
   );
 };
