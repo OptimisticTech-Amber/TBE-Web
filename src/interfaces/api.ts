@@ -4,6 +4,7 @@ import {
   CourseModel,
   InterviewSheetModel,
   InterviewSheetQuestionModel,
+  NotificationType,
   ProjectChapter,
 } from '.';
 
@@ -304,4 +305,17 @@ export interface AddCertificateRequestPayloadProps {
   date: string;
   programName: string;
   programId: string;
+}
+
+export interface AddNotificationRequestPayloadProps {
+  type: NotificationType;
+  text: string;
+  isHTML?: boolean;
+  link?: string;
+  isExternalLink?: boolean;
+}
+
+export interface UpdateNotificationRequestPayloadProps {
+  notificationId: string;
+  updatedNotification: Partial<AddNotificationRequestPayloadProps>;
 }

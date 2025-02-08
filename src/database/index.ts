@@ -10,6 +10,7 @@ import Webinar from './models/Webinar';
 import Certificate from './models/Certificate';
 import Playlist from './models/YouFocus/Playlist';
 import UserPlaylist from './models/YouFocus/UserPlaylist';
+import Notification from './models/Notification';
 
 export {
   Project,
@@ -23,6 +24,7 @@ export {
   Certificate,
   Playlist,
   UserPlaylist,
+  Notification,
 };
 
 // Query
@@ -33,3 +35,4 @@ export * from './query/interview-prep';
 export * from './query/webinar';
 export * from './query/certificate';
 export * from './query/youfocus';
+export * from './query/notification';
