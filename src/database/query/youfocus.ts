@@ -156,7 +156,7 @@ const updateUserPlaylistWatchTime = async (
   time: number
 ): Promise<DatabaseQueryResponseType> => {
   try {
-    console.log("Updating watch time with:", time);
+    console.log('Updating watch time with:', time);
 
     const userPlaylist = await UserPlaylist.findOneAndUpdate(
       { userId, playlistId },
@@ -165,18 +165,17 @@ const updateUserPlaylistWatchTime = async (
     );
 
     if (!userPlaylist) {
-      return { error: "UserPlaylist not found" };
+      return { error: 'UserPlaylist not found' };
     }
 
-    console.log("Updated userPlaylist:", userPlaylist);
+    console.log('Updated userPlaylist:', userPlaylist);
 
     return { data: userPlaylist };
   } catch (error) {
-    console.error("Error updating watch time:", error);
-    return { error: "An error occurred while updating watch time" };
+    console.error('Error updating watch time:', error);
+    return { error: 'An error occurred while updating watch time' };
   }
 };
-
 
 const recommendedPlaylist = async (
   userId: string,
@@ -235,5 +234,5 @@ export {
   deleteUserPlaylistFromDB,
   getPlaylistVideoByIDFromDB,
   updateUserPlaylistWatchTime,
-  recommendedPlaylist
+  recommendedPlaylist,
 };
