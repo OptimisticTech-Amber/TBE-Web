@@ -68,10 +68,7 @@ const MDXRenderer = ({ mdxSource, actions }: MDXRendererProps) => {
     const lang = token.info.trim();
     const code = token.content;
 
-    return `<div class="overflow-x-auto hover:bg-greyLight rounded bg-accent transition border px-2 py-1 "><pre class=" "><code class="language-${lang}">${md.utils.escapeHtml(
-      code
-      
-    )}</code></pre></div>`;
+    return `<pre class="bg-accent rounded p-2 mb-2"><code class="language-${lang}">${code}</code></pre>`;
   };
 
   const mdxHTML = md.render(mdxSource);
